@@ -1,0 +1,7 @@
+{
+  "DB_HOST"  : "mongodb://app_batalha:121294@appbatalha-shard-00-00-vpocl.mongodb.net:27017,appbatalha-shard-00-01-vpocl.mongodb.net:27017,appbatalha-shard-00-02-vpocl.mongodb.net:27017/appBatalha?ssl=true&replicaSet=appBatalha-shard-0&authSource=admin",
+  "NODE_ENV" : "dev",
+  "PORT"     : 3000,
+  "BASE_URL" : "http://localhost:3000"
+
+}
