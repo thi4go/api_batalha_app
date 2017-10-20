@@ -1,8 +1,6 @@
 
 'use strict'
 
-const localUri = 'mongodb://127.0.0.1:27017/API_APP_BATALHA'
-
 const devEnv = require('./config/dev.json')
 
 if(!process.env.NODE_ENV)
