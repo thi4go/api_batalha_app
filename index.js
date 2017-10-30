@@ -4,12 +4,13 @@
 /**
  * Module Dependencies
  */
-const config    = require('./config'),
-  restify       = require('restify'),
-  bunyan        = require('bunyan'),
-  winston       = require('winston'),
-  bunyanWinston = require('bunyan-winston-adapter'),
-  mongoose      = require('mongoose')
+const config        = require('./config'),
+      restify       = require('restify'),
+      bunyan        = require('bunyan'),
+      winston       = require('winston'),
+      bunyanWinston = require('bunyan-winston-adapter'),
+      mongoose      = require('mongoose'),
+      cors          = require('cors')
 
 /**
  * Logging
@@ -39,6 +40,8 @@ global.server = restify.createServer({
 /**
  * Middleware
  */
+server.use(cors())
+server.options("*", cors())
 server.use(restify.jsonBodyParser({ mapParams: true }))
 server.use(restify.acceptParser(server.acceptable))
 server.use(restify.queryParser({ mapParams: true }))
