@@ -14,7 +14,7 @@ module.exports = {
     port: process.env.PORT || devEnv.PORT,
     base_url: process.env.BASE_URL || devEnv.BASE_URL,
     db: {
-        // uri: 'mongodb://127.0.0.1:27017/API_APP_BATALHA',
+        // uri: 'mongodb://127.0.0.1:27017/api_batalha_app',
         uri: devEnv.DB_HOST,
     },
 }
