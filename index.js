@@ -41,7 +41,7 @@ global.server = restify.createServer({
  * Middleware
  */
 server.use(cors())
-server.options("*", cors())
+// server.options("*", cors())
 server.use(restify.jsonBodyParser({ mapParams: true }))
 server.use(restify.acceptParser(server.acceptable))
 server.use(restify.queryParser({ mapParams: true }))
