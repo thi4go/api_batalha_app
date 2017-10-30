@@ -40,13 +40,17 @@ global.server = restify.createServer({
 /**
  * Middleware
  */
-server.use(cors())
+server.pre(restify.CORS())
+server.use(restify.CORS())
 // server.options("*", cors())
 server.use(restify.jsonBodyParser({ mapParams: true }))
 server.use(restify.acceptParser(server.acceptable))
 server.use(restify.queryParser({ mapParams: true }))
 server.use(restify.fullResponse())
 
+restify.CORS.ALLOW_HEADERS.push('authorization');
+restify.CORS.ALLOW_HEADERS.push('Accept-Encoding');
+restify.CORS.ALLOW_HEADERS.push('Accept-Language');
 // server.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 //   res.header("Access-Control-Allow-Origin", "*");
