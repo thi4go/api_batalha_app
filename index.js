@@ -10,7 +10,7 @@ const config        = require('./config'),
       winston       = require('winston'),
       bunyanWinston = require('bunyan-winston-adapter'),
       mongoose      = require('mongoose'),
-      cors          = require('cors')
+      corsMiddleware = require('restify-cors-middleware')
 
 /**
  * Logging
@@ -40,17 +40,21 @@ global.server = restify.createServer({
 /**
  * Middleware
  */
-server.pre(restify.CORS())
-server.use(restify.CORS())
-// server.options("*", cors())
+const cors = corsMiddleware({
+  preflightMaxAge: 5, //Optional
+  origins: ['*'],
+  allowHeaders: ['API-Token', 'Access-Control-Allow-Origin'],
+  exposeHeaders: ['API-Token-Expiry']
+})
+
+server.pre(cors.preflight)
+server.use(cors.actual)
+
 server.use(restify.jsonBodyParser({ mapParams: true }))
 server.use(restify.acceptParser(server.acceptable))
 server.use(restify.queryParser({ mapParams: true }))
 server.use(restify.fullResponse())
 
-restify.CORS.ALLOW_HEADERS.push('authorization');
-restify.CORS.ALLOW_HEADERS.push('Accept-Encoding');
-restify.CORS.ALLOW_HEADERS.push('Accept-Language');
 // server.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 //   res.header("Access-Control-Allow-Origin", "*");
