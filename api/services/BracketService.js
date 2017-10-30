@@ -84,21 +84,20 @@ const BracketService = {
 
 	// ** Main function to select MC's at first stage
 	firstStage(users) {
-		let usersmock = mockup()
-		let n = usersmock.length
+		let n = users.length
 		var firstStage
 
 		if(n <= 16) {
 			// ** Organize the few fighters the best we can:
 			let numrounds = RoundService.defineLowRounds(n)
-			firstStage = RoundService.rounds(usersmock, numrounds)
+			firstStage = RoundService.rounds(users, numrounds)
 		}
 		else {
 			if(n < 25) count = 16
 			else if(n >= 25) count = 20
 
 			// ** Lottery:
-			let theChosenOnes = timeToShine(usersmock)
+			let theChosenOnes = timeToShine(users)
 			firstStage = RoundService.rounds(theChosenOnes)
 		}
 
