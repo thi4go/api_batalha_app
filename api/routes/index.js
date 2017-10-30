@@ -58,9 +58,9 @@ server.get('/battle/get-latest-battle',            battleController.getLastestBa
 // --
 server.get('/battle/get-battles',                  battleController.getAllBattles)
 server.get('/battle/get-battle-by-id/:battle_id',  battleController._getBattleById)
-server.get('/battle/delete-all-battles',           battleController.deleteAllBattles)
 server.put('/battle/end-battle',                   battleController.endBattle)
-server.post('/battle/set-winner',                   battleController.setBattleWinner)
+
+server.post('/battle/set-winner',                  battleController.setBattleWinner)
 server.post('/battle/update-battle',               battleController.updateBattle)
 server.post('/battle/make-battle',                 battleController.createBattle)
 
@@ -111,6 +111,3 @@ server.get('/video/get-all-videos',               videoController.getAllVideos)
 server.get('/video/get-video-by-id/:video_id',    videoController.getVideoById)
 server.put('/video/update-video/:video_id',       videoController.updateVideo)
 server.del('/video/delete-video/:video_id',       videoController.deleteVideo)
-
-
-

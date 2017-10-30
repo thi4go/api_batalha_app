@@ -1,7 +1,7 @@
 'use strict';
 
 
-const _    = require('lodash'),
+const _             = require('lodash'),
   controller        = require('./Controller'),
   mongoose          = require('mongoose'),
   BracketController = require('./BracketController'),
@@ -14,15 +14,15 @@ const _    = require('lodash'),
 
 const BattleController = {
 
-  battles(req, res, next){
-    battleService.getAllBattles().then(battles=>{
+  battles (req, res, next) {
+    battleService.getAllBattles().then( battles => {
       controller.returnResponseSuccess(res,battles)
     }).catch(err=>{
       return controller.returnResponseError(res,err)
     })
   },
 
-  deleteBattle(req, res, next){
+  deleteBattle (req, res, next) {
     const id = req.params.id
 
     battleService.deleteBattle(id).then(response => {
@@ -32,7 +32,7 @@ const BattleController = {
     })
   },
 
-  createBattle : function(req, res, next) {
+  createBattle (req, res, next) {
     let data = req.body;
 
     let battle = battleService.instantiateBattle(data);
@@ -108,9 +108,9 @@ const BattleController = {
   },
 
   updateBattle : function(req, res, next){
-    const battle_id  = req.body.battle_id;
-    const round_id   = req.body.round_id;
-    const user_id    = req.body.user_id;
+    const battle_id  = req.body.battle_id
+    const round_id   = req.body.round_id
+    const user_id    = req.body.user_id
 
     var new_stage
 
@@ -119,10 +119,10 @@ const BattleController = {
         UserController.getUserById(user_id),
         BattleController.getBattleById(battle_id)
       ]).then( result => {
-        let user       = result[0];
-        let bracket_id = result[1].brackets;
+        let user       = result[0]
+        let bracket_id = result[1].brackets
 
-        BracketController.updateBracket(res, bracket_id, round_id, user);
+        BracketController.updateBracket(res, bracket_id, round_id, user)
 
       }).catch( err => {
         return controller.returnResponseError(res, err)
@@ -164,9 +164,8 @@ const BattleController = {
       .sort({ created: -1 })
       .limit(1)
       .exec( (err, doc) => {
-        if(err) controller.returnResponseError(res, err)
-
-        controller.returnResponseSuccess(res, doc, 'Latest Battle returned')
+        if (err) controller.returnResponseError(res, err)
+        else controller.returnResponseSuccess(res, doc, 'Latest Battle returned')
       })
   },
 
