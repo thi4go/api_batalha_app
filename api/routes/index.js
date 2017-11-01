@@ -7,7 +7,6 @@
 const _    = require('lodash'),
   errors   = require('restify-errors')
 
-
 /**
  * Model Schema
  */
@@ -19,8 +18,6 @@ const User    = require('../models/User'),
       Image   = require('../models/Image'),
       Video   = require('../models/Video'),
       News    = require('../models/News')
-
-
 
 /**
  * Controllers
@@ -36,51 +33,57 @@ const userController    = require('../controllers/UserController'),
       newsController    = require('../controllers/NewsController')
 
 
- /**
-  * Routes
+ /*
+  * ROUTES
   */
 
  /*
   * rounds
   */
 
-server.get('/round/get-rounds',                   roundController._getAllRounds)
-server.get('/round/get-round-by-id/:round_id',    roundController._getRoundById)
+server.get('/rounds',    roundController.getAll)
+server.get('/round/:id', roundController.getById)
 
 /*
- * battles
+ * BATTLES
  */
-server.get('/battles',                             battleController.battles)
-server.del('/battle/:id',                          battleController.deleteBattle)
 
-//ARRUMAR
-server.get('/battle/get-latest-battle',            battleController.getLastestBattle)
-// --
-server.get('/battle/get-battles',                  battleController.getAllBattles)
-server.get('/battle/get-battle-by-id/:battle_id',  battleController._getBattleById)
-server.put('/battle/end-battle',                   battleController.endBattle)
+// REST
+server.get('/battles',     battleController.getAll)
+server.get('/battle/:id',  battleController.getById)
+server.put('/battle/:id',  battleController.update)
+server.del('/battle/:id',  battleController.delete)
+server.post('/battle',     battleController.createBattle)
 
-server.post('/battle/set-winner',                  battleController.setBattleWinner)
-server.post('/battle/update-battle',               battleController.updateBattle)
-server.post('/battle/make-battle',                 battleController.createBattle)
+// SERVICES
+server.get('/battle/get-latest-battle',    battleController.getLastestBattle)
+server.post('/battle/update-round-winner', battleController.updateRoundWinner)
+
 
 /*
- * brackets
+ * BRACKETS
  */
 
-server.get('/bracket/get-bracket-by-id/:bracket_id',  bracketController._getBracketById)
-server.get('/bracket/get-brackets',                   bracketController._getAllBrackets)
+//REST
+server.get('/brackets',     bracketController.getAll)
+server.get('/bracket/:id',  bracketController.getById)
+server.put('/bracket/:id',  bracketController.update)
+server.del('/bracket/:id',  bracketController.delete)
+
 
 /*
- * user
+ * USER
  */
 
-server.post('/user/create-user',               userController.createUser)
+//REST
+server.get('/users',      userController.getAll)
+server.get('/user/:id',  userController.getById)
+server.put('/user/:id',  userController.update)
+server.del('/user/:id',  userController.delete)
+server.post('/user',     userController.createUser)
+
 server.post('/user/search-user-by-name',       userController.searchUserByName)
-server.get('/user/get-all-users',              userController.getAllUsers)
-server.get('/user/get-user-by-id/:user_id',    userController._getUserById)
-server.put('/user/update-user-by-id/:user_id', userController.updateUserById)
-server.del('/user/delete-user-by-id/:user_id', userController.deleteUserById)
+
 
 /*
  * groups

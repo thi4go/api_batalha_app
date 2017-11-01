@@ -1,31 +1,45 @@
 'use strict';
 
 
-const controller        = require('./Controller'),
-  mongoose          = require('mongoose'),
+const Controller  = require('./Controller'),
+  mongoose        = require('mongoose'),
+  RoundController = require('./RoundController'),
+  BracketService  = require('../services/BracketService'),
+  Service         = require('../services/Service'),
   Bracket 		    = mongoose.model('Bracket'),
-  RoundController   = require('./RoundController'),
-  BracketService    = require('../services/BracketService')
+  Round           = mongoose.model('Round')
 
 const BracketController = {
 
-  getBracketById : function(bracket_id) {
-    return new Promise( (resolve, reject) => {
+  // ------- RESTful ROUTES -------
 
-      //Bracket.findById(bracket_id, function(err, doc) {
-      //if (err) reject(err)
-      //resolve(doc)
-      //})
-      Bracket.findOne({_id : bracket_id})
-        .populate('first_stage quarter_final semi_final finale').exec(
-        function(err, doc){
-          if(err) reject(err)
-          resolve(doc)
-        })
-    })
+  getAll (req, res, next) {
+    Controller.getAll(Bracket, res)
   },
 
-  saveBracket : function(bracket, stage){
+  getById (req, res, next) {
+    const id = req.params.id
+
+    Controller.getById(Bracket, res, id)
+  },
+
+  update (req, res, next) {
+    const id   = req.params.id
+    const data = req.body
+
+    Controller.update(Bracket, res, id, data)
+  },
+
+  delete (req, res, next) {
+    const id = req.params.id
+
+    Controller.delete(Bracket, res, id)
+  },
+
+
+  // ------- SERVICES -------
+
+  saveBracket (bracket, stage){
     let rounds = bracket[stage]
     for (var i = 0, len = rounds.length; i < len; i++) {
       RoundController.saveRound(rounds[i])
@@ -35,25 +49,7 @@ const BracketController = {
     })
   },
 
-  _getBracketById : function(req, res, next){
-    let id = req.params.bracket_id
-    controller.getById(Bracket, id, req, res, next)
-  },
-
-  _getAllBrackets : function(req, res, next) {
-    Bracket.find({}).exec(function(err,brackets){
-      if(err) controller.returnResponseError(res,err)
-      if(!brackets) controller.returnResponseNotFound(err,next)
-      let bracketMap = {}
-      brackets.forEach(function(bracket){
-        bracketMap[bracket._id] = bracket
-      })
-      controller.returnResponseSuccess(res,bracketMap)
-    })
-  },
-
-
-  updateBracket : function(res, bracket_id, round_id, user){
+  updateBracket (res, bracket_id, round_id, user){
 
     var bracket = null
     var round   = null
@@ -62,8 +58,8 @@ const BracketController = {
     RoundController.setRoundWinner(round_id, user)
 
     Promise.all([
-      BracketController.getBracketById(bracket_id),
-      RoundController.getRoundById(round_id)
+      Service.getById(Bracket, bracket_id),
+      Service.getById(Round, round_id)
     ]).then( result => {
       bracket = result[0]
       round   = result[1]
@@ -77,7 +73,7 @@ const BracketController = {
         if(err) throw err
       })
 
-      controller.returnResponseSuccess(res, nextStage, 'Updated Succesfully');
+      Controller.returnResponseSuccess(res, nextStage, 'Updated Succesfully');
     }).catch( err => {
       throw err
     })

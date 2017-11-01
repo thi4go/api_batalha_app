@@ -27,4 +27,3 @@ ImageSchema.plugin(createdModified, { index: true })
 
 const Image = mongoose.model('Image', ImageSchema)
 module.exports = Image
-

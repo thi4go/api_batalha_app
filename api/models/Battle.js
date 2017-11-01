@@ -2,6 +2,7 @@
 
 const mongoose       = require('mongoose'),
     mongooseApiQuery = require('mongoose-api-query'),
+    autopopulate     = require('mongoose-autopopulate'),
     createdModified  = require('mongoose-createdmodified').createdModifiedPlugin
 
 const BattleSchema = new mongoose.Schema({
@@ -13,13 +14,15 @@ const BattleSchema = new mongoose.Schema({
         type: String
     },
     brackets: {
-        type 	 : mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Bracket',
-        required : true,
+        required: true,
+        autopopulate: true
     },
     winner: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        autopopulate: true
     },
     active: {
         type: Boolean,
@@ -27,6 +30,7 @@ const BattleSchema = new mongoose.Schema({
     }
 });
 
+BattleSchema.plugin(autopopulate)
 BattleSchema.plugin(mongooseApiQuery)
 BattleSchema.plugin(createdModified, { index: true })
 

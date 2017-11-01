@@ -2,11 +2,10 @@
 
 
 const _             = require('lodash'),
-  controller        = require('./Controller'),
   mongoose          = require('mongoose'),
+  Controller        = require('./Controller'),
+  Service           = require('../services/Service'),
   BracketController = require('./BracketController'),
-  UserController    = require('./UserController'),
-  battleService     = require('../services/BattleService'),
   MapRound          = require('../utils/MapRound'),
   Battle            = mongoose.model('Battle'),
   User              = mongoose.model('User')
@@ -14,100 +13,63 @@ const _             = require('lodash'),
 
 const BattleController = {
 
-  battles (req, res, next) {
-    battleService.getAllBattles().then( battles => {
-      controller.returnResponseSuccess(res,battles)
-    }).catch(err=>{
-      return controller.returnResponseError(res,err)
-    })
+  // ------- RESTful ROUTES -------
+
+  getAll (req, res, next) {
+    Controller.getAll(Battle, res)
   },
 
-  deleteBattle (req, res, next) {
+  getById (req, res, next) {
     const id = req.params.id
 
-    battleService.deleteBattle(id).then(response => {
-      controller.returnResponseSuccess(res,{},"Deleted successfully")
-    }).catch(err => {
-      controller.returnResponseError(res, err)
-    })
+    Controller.getById(Battle, res, id)
+  },
+
+  update (req, res, next) {
+    const id   = req.params.id
+    const data = req.body
+
+    Controller.update(Battle, res, id, data)
+  },
+
+  delete (req, res, next) {
+    const id = req.params.id
+
+    Controller.delete(Battle, res, id)
   },
 
   createBattle (req, res, next) {
-    let data = req.body;
+    const data = req.body
 
-    let battle = battleService.instantiateBattle(data);
+    const bracket = BracketService.firstStage(data.users)
+
+    const battle  = new Battle({
+      'name': data.name,
+      'description': data.description,
+      'brackets': bracket
+    })
 
     try {
-      BracketController.saveBracket(battle.brackets, MapRound.STAGESTR[0]);
+      BracketController.saveBracket(battle.brackets, MapRound.STAGESTR[0])
     } catch(err) {
-      controller.returnResponseError(res,err);
+      Controller.returnResponseError(res,err)
     }
 
     battle.save(function(err){
-      if(err) controller.returnResponseError(res,err);
+      if(err) Controller.returnResponseError(res,err)
 
       Battle.findOne({_id: battle._id})
-        .populate('brackets')
-        .populate({
-          path: 'brackets',
-          populate: {
-            path: 'first_stage',
-            populate: {
-              path: 'first second third'
-            }
-          }
-        })
         .exec(function(err, doc) {
-          if(err) controller.returnResponseError(res,err);
-          controller.returnResponseSuccess(res, doc, 'Battle instantiated');
+          if(err) Controller.returnResponseError(res,err)
+          Controller.returnResponseSuccess(res, doc, 'Battle instantiated')
         })
     })
   },
 
-  endBattle: function(req, res, next) {
-    let battle_id = req.body.battle_id;
-    let winner_id = req.body.winner_id;
 
-    Battle.findOneAndUpdate({_id: battle_id}, {active: false}, function(err, doc) {
-      if(err) controller.returnResponseError(res, err);
-      controller.returnResponseSuccess(res, {}, 'Battle ended with success');
-    })
-  },
+  // ------- SERVICES -------
 
-  getAllBattles : function(req, res, next) {
-    Battle.find({}).exec(function(err,battles){
-      if(err) controller.returnResponseError(res,err);
-      if(!battles) controller.returnResponseNotFound(err,next);
-
-      let battleMap = {};
-
-      battles.forEach(function(battle){
-        battleMap[battle._id] = battle
-      });
-
-      controller.returnResponseSuccess(res,battleMap)
-    })
-  },
-
-  getBattleById : function(battle_id){
-      Battle.findById(battle_id, function(err, doc) {
-        if (err) reject(err);
-        resolve(doc);
-      })
-  },
-
-  _getBattleById : function(req, res, next){
-    let id = req.params.battle_id;
-    controller.getById(Battle, id, req, res, next)
-  },
-
-  getBattleWinner : function(req, res, next){
-  },
-
-  getAllBattlesByWinner : function(req, res, next){
-  },
-
-  updateBattle : function(req, res, next){
+  updateRoundWinner (req, res, next){
     const battle_id  = req.body.battle_id
     const round_id   = req.body.round_id
     const user_id    = req.body.user_id
@@ -116,8 +78,8 @@ const BattleController = {
 
     try {
       Promise.all([
-        UserController.getUserById(user_id),
-        BattleController.getBattleById(battle_id)
+        Service.getById(User, user_id),
+        Service.getById(Battle, battle_id)
       ]).then( result => {
         let user       = result[0]
         let bracket_id = result[1].brackets
@@ -125,57 +87,21 @@ const BattleController = {
         BracketController.updateBracket(res, bracket_id, round_id, user)
 
       }).catch( err => {
-        return controller.returnResponseError(res, err)
+        return Controller.returnResponseError(res, err)
       })
 
     } catch(err) {
-      return controller.returnResponseError(res, err)
+      return Controller.returnResponseError(res, err)
     }
   },
 
-  setBattleWinner : function(req, res, next){
-    let battle_id = req.body.battle_id
-    let user_id   = req.body.user_id
-
-    Battle.findOneAndUpdate({_id: battle_id}, {'winner': user_id}, function(err, doc) {
-      if(err) controller.returnResponseError(res, err)
-
-      controller.returnResponseSuccess(res, doc, 'Setted winner for battle')
-    })
-  },
-
   getLastestBattle : function(req, res, next){
-    //   Battle.findOne({active: true}, function(err, doc) {
-    //     if(err) controller.returnResponseError(res, err);
-    //     controller.returnResponseSuccess(res, doc, 'Latest Battle returned');
-    //   })
-    Battle.find({})
-      .populate('brackets')
-      .populate({
-        path: 'brackets',
-        populate: {
-          path: 'first_stage quarter_final semi_final finale',
-          populate: {
-            path: 'first second third'
-          }
-
-        }
-      })
-      .sort({ created: -1 })
-      .limit(1)
-      .exec( (err, doc) => {
-        if (err) controller.returnResponseError(res, err)
-        else controller.returnResponseSuccess(res, doc, 'Latest Battle returned')
-      })
+    Battle.findOne({active: true}.sort({ created: -1}).limit(1), function(err, doc) {
+      if(err) Controller.returnResponseError(res, err);
+      Controller.returnResponseSuccess(res, doc, 'Latest Battle returned');
+    })
   },
 
-  deleteAllBattles : function(req, res, next){
-    Battle.remove({}, function(err, doc) {
-      if(err) controller.returnResponseError(res, err)
-
-      controller.returnResponseSuccess(res, {}, 'All battles deleted')
-    })
-  }
 }
 
 
