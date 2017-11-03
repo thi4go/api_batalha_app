@@ -56,7 +56,7 @@ server.del('/battle/:id',  battleController.delete)
 server.post('/battle',     battleController.createBattle)
 
 // SERVICES
-server.get('/battle/get-latest-battle',    battleController.getLastestBattle)
+server.get('/battle/last',                 battleController.getLastestBattle)
 server.post('/battle/update-round-winner', battleController.updateRoundWinner)
 
 
