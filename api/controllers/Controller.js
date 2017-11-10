@@ -31,43 +31,50 @@ const Controller = {
 		})
 	},
 
-	create : function(type, req, res, next) {
+	create (type, res) {
 		const scope = this
+
 		type.save(function(err,doc) {
-			res.send(doc)
-			if (err) scope.returnResponseError(res,err)
-
-      		scope.returnResponseSuccess(res,doc,'Created with Success')
-
+			if (err) scope.returnResponseError(res, err)
+  		else scope.returnResponseSuccess(res, doc, 'Updated with Success')
 		})
 	},
 
-	getAll : function(type, req, res, next) {
-
+	update (type, res, id, data) {
 		const scope = this
 
-		type.apiQuery(req.params, function(err, docs) {
-			if (err)
-				scope.returnResponseError(res,err)
-
-			scope.returnResponseSuccess(res,docs)
-
+		type.findOneAndUpdate({_id: id}, data, function(err, doc) {
+			if (err) scope.returnResponseError(res, err)
+			else scope.returnResponseSuccess(res, doc, 'Updated with success')
 		})
 	},
 
-	getById : function(type, id, req, res, next) {
+	delete (type, res, id) {
+		const scope = this
 
+		type.remove({ _id: id }, function(err) {
+			if (err) scope.returnResponseError(res,err)
+			else scope.returnResponseSuccess(res,[],'deleted with success')
+		})
+	},
+
+	getAll (type, res, populate, childrens) {
+		const scope = this
+
+		type.apiQuery({})
+			.exec(function(err, docs) {
+				if (err) scope.returnResponseError(res, err)
+				else scope.returnResponseSuccess(res, docs)
+			});
+	},
+
+	getById (type, res, id) {
 		const scope = this
 
 		type.findOne({ _id: id }, function(err, doc) {
-
-			if (err)
-	        	scope.returnResponseError(res,err)
-
-	      	scope.returnResponseSuccess(res,doc)
-
+			if (err) 	scope.returnResponseError(res,err)
+			else 	scope.returnResponseSuccess(res,doc)
 		})
-
 	},
 
 	updateById : function(type, id, data, req, res, next) {

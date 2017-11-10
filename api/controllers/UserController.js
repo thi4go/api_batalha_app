@@ -3,12 +3,36 @@
 
 
 const controller = require('./Controller'),
-	_ 	     	 = require('lodash'),
-	mongoose     = require('mongoose'),
-	User 	     = mongoose.model('User')
+		  mongoose   = require('mongoose'),
+			User 	     = mongoose.model('User')
 
 
 const UserController = {
+
+	// ------- RESTful ROUTES -------
+
+	getAll (req, res, next) {
+		Controller.getAll(User, res)
+	},
+
+	getById (req, res, next) {
+		const id = req.params.id
+
+		Controller.getById(User, res, id)
+	},
+
+	update (req, res, next) {
+		const id   = req.params.id
+		const data = req.body
+
+		Controller.update(User, res, id, data)
+	},
+
+	delete (req, res, next) {
+		const id = req.params.id
+
+		Controller.delete(User, res, id)
+	},
 
 	createUser : function(req, res, next) {
 		let data = req.body || {}
@@ -23,39 +47,8 @@ const UserController = {
 		})
 	},
 
-	getAllUsers : function(req, res, next) {
 
-		User.find({}).exec(function(err,users){
-
-			if(err)
-				controller.returnResponseError(res,err)
-			if(!users)
-				controller.returnResponseNotFound(res,next)
-
-			// let userMap = {}
-			//
-			// users.forEach(function(user){
-			// 	userMap[user._id] = user
-			// })
-
-			controller.returnResponseSuccess(res,users)
-		})
-	},
-
-	getUserById : function(user_id) {
-		return new Promise( (resolve, reject) => {
-
-			User.findById(user_id, function(err, doc) {
-				if (err) reject(err)
-				resolve(doc)
-			})
-		})
-	},
-
-    _getUserById : function(req, res, next){
-        let id = req.params.user_id
-        controller.getById(User, id, req, res, next)
-    },
+	// ------- SERVICES -------
 
 	searchUserByName : function(req, res, next){
 
@@ -69,21 +62,8 @@ const UserController = {
 
 	},
 
-	updateUserById : function(req, res, next) {
 
-		let data = req.body || {}
-		let id   = req.params.user_id
 
-		controller.updateById(User, id, data, req, res, next)
-
-	},
-
-	deleteUserById : function(req, res, next) {
-
-		let id = req.params.user_id
-		controller.deleteById(User, id, req, res, next)
-
-	},
 }
 
 module.exports = UserController

@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    _group: [{
+    group: [{
         type 	 : mongoose.Schema.Types.ObjectId,
         ref 	 : 'Group',
         required : false

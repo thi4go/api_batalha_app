@@ -24,6 +24,7 @@
     "mocha": "^3.4.2",
     "mongoose": "^4.12.3",
     "mongoose-api-query": "^0.1.1-pre",
+    "mongoose-autopopulate": "^0.6.0",
     "mongoose-createdmodified": "0.0.2",
     "mongoose-type-url": "^1.0.2",
     "restify": "^4.3.1",
