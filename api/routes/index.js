@@ -33,82 +33,70 @@ const userController    = require('../controllers/UserController'),
       newsController    = require('../controllers/NewsController')
 
 
- /*
-  * ROUTES
-  */
 
- /*
-  * rounds
-  */
 
+/*       /*
+* ROUTES *
+*/       /*
+
+
+/*
+* Microservices routes
+*/
+
+server.get('/get-active-battle',                 battleController.getLastestBattle)
+server.post('/update-round-winner', battleController.updateRoundWinner)
+server.post('/search-user-by-name',       userController.searchUserByName)
+
+
+/*
+* RESTful routes for dabatase models
+*/
+
+// ROUNDS
 server.get('/rounds',    roundController.getAll)
 server.get('/round/:id', roundController.getById)
 
-/*
- * BATTLES
- */
-
-// REST
+// BATTLES
 server.get('/battles',     battleController.getAll)
 server.get('/battle/:id',  battleController.getById)
 server.put('/battle/:id',  battleController.update)
 server.del('/battle/:id',  battleController.delete)
 server.post('/battle',     battleController.createBattle)
 
-// SERVICES
-server.get('/battle/last',                 battleController.getLastestBattle)
-server.post('/battle/update-round-winner', battleController.updateRoundWinner)
 
-
-/*
- * BRACKETS
- */
-
-//REST
+// BRACKETS
 server.get('/brackets',     bracketController.getAll)
 server.get('/bracket/:id',  bracketController.getById)
 server.put('/bracket/:id',  bracketController.update)
 server.del('/bracket/:id',  bracketController.delete)
 
 
-/*
- * USER
- */
-
-//REST
+// USER
 server.get('/users',      userController.getAll)
 server.get('/user/:id',  userController.getById)
 server.put('/user/:id',  userController.update)
 server.del('/user/:id',  userController.delete)
 server.post('/user',     userController.createUser)
 
-server.post('/user/search-user-by-name',       userController.searchUserByName)
 
-
-/*
- * groups
- */
-
+// GROUPS
 server.post('/group/create-group',                groupController.createGroup)
 server.get('/group/get-all-groups',               groupController.getAllGroups)
 server.get('/group/get-group-by-id/:group_id',    groupController.getGroupById)
 server.put('/group/update-group-by-id/:group_id', groupController.updateGroupById)
 server.del('/group/delete-group-by-id/:group_id', groupController.deleteGroupById)
 
-/*
- * images
- */
 
+// IMAGES
 server.post('/image/create-image',                imageController.createImage)
 server.get('/image/get-all-images',               imageController.getAllImages)
 server.get('/image/get-image-by-id/:image_id',    imageController.getImageById)
 server.put('/image/update-image/:image_id',       imageController.updateImage)
 server.del('/image/delete-image/:image_id',       imageController.deleteImage)
 
-/*
- * videos
- */
 
+// VIDEOS
 server.post('/video/create-video',                videoController.createVideo)
 server.get('/video/get-all-videos',               videoController.getAllVideos)
 server.get('/video/get-video-by-id/:video_id',    videoController.getVideoById)

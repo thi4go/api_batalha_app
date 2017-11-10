@@ -100,11 +100,11 @@ const BattleController = {
   },
 
   getLastestBattle (req, res, next) {
-    // Battle.findOne({active: true}).then( (err, doc) => {
-    //   if(err) Controller.returnResponseError(res, err)
-    //   Controller.returnResponseSuccess(res, doc, 'Latest Battle returned')
-    // })
-    Controller.getAll(Battle, res)
+    Battle.find({active: true}).sort({created: -1}).limit(1).exec( (err, doc) => {
+      if(err) Controller.returnResponseError(res, err)
+      Controller.returnResponseSuccess(res, doc, 'Latest Battle returned')
+    })
+    // Controller.getAll(Battle, res)
   },
 
 }
