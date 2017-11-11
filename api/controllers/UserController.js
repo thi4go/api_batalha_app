@@ -2,7 +2,7 @@
 'use strict';
 
 
-const controller = require('./Controller'),
+const Controller = require('./Controller'),
 		  mongoose   = require('mongoose'),
 			User 	     = mongoose.model('User')
 
