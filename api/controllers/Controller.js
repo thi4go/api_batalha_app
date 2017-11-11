@@ -8,20 +8,12 @@ const _ 	   = require('lodash'),
 const Controller = {
 
 	returnResponseSuccess(res,data,msg){
-		return res.json({
-			success : true,
-			data    : data,
-			msg     : msg
-		})
+		return res.json(data)
 
 	},
 
 	returnResponseError(res,err){
-		return res.json({
-			success : false,
-			error   : err,
-			msg     : err.message
-		})
+		return res.json(err)
 	},
 
 	returnResponseNotFound(res,next){
@@ -30,6 +22,8 @@ const Controller = {
 			msg     : new errors.ResourceNotFoundError('The resource you requested could not be found.')
 		})
 	},
+
+	//----------------------------------------------------------------------------
 
 	create (type, res) {
 		const scope = this
@@ -61,11 +55,10 @@ const Controller = {
 	getAll (type, res, populate, childrens) {
 		const scope = this
 
-		type.apiQuery({})
-			.exec(function(err, docs) {
-				if (err) scope.returnResponseError(res, err)
-				else scope.returnResponseSuccess(res, docs)
-			});
+		type.find({}).then( (err, docs) => {
+			if (err) scope.returnResponseError(res, err)
+			else scope.returnResponseSuccess(res, docs)
+		})
 	},
 
 	getById (type, res, id) {
