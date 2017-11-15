@@ -43,7 +43,7 @@ global.server = restify.createServer({
 const cors = corsMiddleware({
   preflightMaxAge: 5, //Optional
   origins: ['*'],
-  allowHeaders: ['API-Token', 'Access-Control-Allow-Origin'],
+  allowHeaders: ['Access-Control-Allow-Origin'],
   exposeHeaders: ['API-Token-Expiry']
 })
 
