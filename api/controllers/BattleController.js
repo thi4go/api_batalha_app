@@ -6,6 +6,7 @@ const _             = require('lodash'),
   Controller        = require('./Controller'),
   Service           = require('../services/Service'),
   BracketController = require('./BracketController'),
+  BracketService    = require('../services/BracketService'),
   MapRound          = require('../utils/MapRound'),
   Battle            = mongoose.model('Battle'),
   User              = mongoose.model('User')
@@ -38,32 +39,41 @@ const BattleController = {
     Controller.delete(Battle, res, id)
   },
 
+  //
+  // POST - CREATE BATTLE
+  //
+  // prms: { name: '', description: '', users: []}
+  //
+
   createBattle (req, res, next) {
     const data = req.body
 
-    const bracket = BracketService.firstStage(data.users)
-
-    const battle  = new Battle({
-      'name': data.name,
-      'description': data.description,
-      'brackets': bracket
-    })
-
     try {
+      const bracket = BracketService.firstStage(data.users)
+
+      let battle  = new Battle({
+        'name': data.name,
+        'description': data.description,
+        'brackets': bracket
+      })
+
+      res.send(battle)
+
       BracketController.saveBracket(battle.brackets, MapRound.STAGESTR[0])
+
+      battle.save(function(err){
+        if(err) Controller.returnResponseError(res,err)
+
+        Battle.findOne({_id: battle._id})
+          .exec(function(err, doc) {
+            if(err) Controller.returnResponseError(res,err)
+            Controller.returnResponseSuccess(res, doc, 'Battle instantiated')
+          })
+      })
+
     } catch(err) {
       Controller.returnResponseError(res,err)
     }
-
-    battle.save(function(err){
-      if(err) Controller.returnResponseError(res,err)
-
-      Battle.findOne({_id: battle._id})
-        .exec(function(err, doc) {
-          if(err) Controller.returnResponseError(res,err)
-          Controller.returnResponseSuccess(res, doc, 'Battle instantiated')
-        })
-    })
   },
 
 
