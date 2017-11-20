@@ -50,10 +50,10 @@ const cors = corsMiddleware({
 server.pre(cors.preflight)
 server.use(cors.actual)
 
-server.use(restify.jsonBodyParser({ mapParams: true }))
-server.use(restify.acceptParser(server.acceptable))
-server.use(restify.queryParser({ mapParams: true }))
-server.use(restify.fullResponse())
+server.use(restify.plugins.jsonBodyParser({ mapParams: true }))
+server.use(restify.plugins.acceptParser(server.acceptable))
+server.use(restify.plugins.queryParser({ mapParams: true }))
+server.use(restify.plugins.fullResponse())
 
 // server.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");

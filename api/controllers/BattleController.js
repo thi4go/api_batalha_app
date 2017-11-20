@@ -36,7 +36,15 @@ const BattleController = {
   delete (req, res, next) {
     const id = req.params.id
 
-    Controller.delete(Battle, res, id)
+    Battle.findOne({_id: id}).then( (err, doc) => {
+      res.send(doc)
+    })
+
+    // Battle.remove({_id: id}, (err) => {
+    //
+    // })
+    //
+    // Controller.delete(Battle, res, id)
   },
 
   //
@@ -57,9 +65,7 @@ const BattleController = {
         'brackets': bracket
       })
 
-      res.send(battle)
-
-      BracketController.saveBracket(battle.brackets, MapRound.STAGESTR[0])
+      BracketController.saveBracket(res, battle.brackets, MapRound.STAGESTR[0])
 
       battle.save(function(err){
         if(err) Controller.returnResponseError(res,err)
@@ -72,6 +78,7 @@ const BattleController = {
       })
 
     } catch(err) {
+      // res.send(err)
       Controller.returnResponseError(res,err)
     }
   },

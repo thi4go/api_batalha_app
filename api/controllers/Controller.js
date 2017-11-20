@@ -13,7 +13,7 @@ const Controller = {
 	},
 
 	returnResponseError(res,err){
-		return res.json(err)
+		return res.send(401, {error: err})
 	},
 
 	returnResponseNotFound(res,next){
@@ -37,9 +37,12 @@ const Controller = {
 	update (type, res, id, data) {
 		const scope = this
 
-		type.findOneAndUpdate({_id: id}, data, function(err, doc) {
-			if (err) scope.returnResponseError(res, err)
-			else scope.returnResponseSuccess(res, doc, 'Updated with success')
+		type.findOneAndUpdate({_id: id}, data).then( doc => {
+			type.findOne({_id: id}).then( (err, doc) => {
+				scope.returnResponseSuccess(res, doc, 'Updated with success')
+			})
+		}).catch( err => {
+			scope.returnResponseError(res, err)
 		})
 	},
 
@@ -55,9 +58,10 @@ const Controller = {
 	getAll (type, res, populate, childrens) {
 		const scope = this
 
-		type.find({}).then( (err, docs) => {
-			if (err) scope.returnResponseError(res, err)
-			else scope.returnResponseSuccess(res, docs)
+		type.find({}).then( docs => {
+			scope.returnResponseSuccess(res, docs)
+		}).catch( err => {
+			scope.returnResponseError(res, err)
 		})
 	},
 

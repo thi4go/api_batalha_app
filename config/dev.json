@@ -3,5 +3,4 @@
   "NODE_ENV" : "dev",
   "PORT"     : 80,
   "BASE_URL" : "https://batalha-da-escada.herokuapp.com"
-
 }

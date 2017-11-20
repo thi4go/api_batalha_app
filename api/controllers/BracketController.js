@@ -39,8 +39,10 @@ const BracketController = {
 
   // ------- SERVICES -------
 
-  saveBracket (bracket, stage){
+  saveBracket (res, bracket, stage){
     let rounds = bracket[stage]
+
+    // res.send(rounds)
     for (var i = 0, len = rounds.length; i < len; i++) {
       RoundController.saveRound(rounds[i])
     }
