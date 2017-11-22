@@ -40,9 +40,9 @@ const UserController = {
 		let user = new User(data)
 
 		user.save(function(err, doc) {
-			if (err) controller.returnResponseError(res,err)
+			if (err) Controller.returnResponseError(res,err)
 
-			controller.returnResponseSuccess(res,doc,'Created with Success')
+			Controller.returnResponseSuccess(res,doc,'Created with Success')
 
 		})
 	},
@@ -55,9 +55,9 @@ const UserController = {
 		const name = req.params.name
 
 		User.find({name : {$regex : name, $options: "i" } }).exec(function(err,users){
-			if(err)	controller.returnResponseError(res,err)
+			if(err)	Controller.returnResponseError(res,err)
 
-			controller.returnResponseSuccess(res,users)
+			Controller.returnResponseSuccess(res,users)
 		})
 
 	},
