@@ -30,7 +30,7 @@ const Controller = {
 
 		type.save(function(err,doc) {
 			if (err) scope.returnResponseError(res, err)
-  		else scope.returnResponseSuccess(res, doc, 'Updated with Success')
+  		else scope.returnResponseSuccess(res, doc, 'Created with Success')
 		})
 	},
 

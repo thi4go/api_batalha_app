@@ -21,6 +21,7 @@ const UserSchema = new mongoose.Schema({
     user_level: {
         type 	 : Number,
         required : true,
+        default: 1
     },
     virgin: {
         type: Boolean,
