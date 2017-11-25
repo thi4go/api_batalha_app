@@ -25,7 +25,7 @@ const UserSchema = new mongoose.Schema({
     },
     virgin: {
         type: Boolean,
-        default: false
+        default: true
     },
     group: [{
         type 	 : mongoose.Schema.Types.ObjectId,

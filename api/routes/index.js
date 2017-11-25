@@ -44,9 +44,9 @@ const userController    = require('../controllers/UserController'),
 * Microservices routes
 */
 
-server.get('/get-active-battle',                 battleController.getLastestBattle)
+server.get('/get-active-battle',    battleController.getLastestBattle)
 server.post('/update-round-winner', battleController.updateRoundWinner)
-server.post('/search-user-by-name',       userController.searchUserByName)
+server.post('/search-user-by-name', userController.searchUserByName)
 
 
 /*

@@ -102,11 +102,7 @@ const BattleController = {
         let bracket_id = result[1].brackets
 
         BracketController.updateBracket(res, bracket_id, round_id, user)
-
-      }).catch( err => {
-        return Controller.returnResponseError(res, err)
       })
-
     } catch(err) {
       return Controller.returnResponseError(res, err)
     }
