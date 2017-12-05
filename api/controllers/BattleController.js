@@ -47,12 +47,6 @@ const BattleController = {
     // Controller.delete(Battle, res, id)
   },
 
-  //
-  // POST - CREATE BATTLE
-  //
-  // prms: { name: '', description: '', users: []}
-  //
-
   createBattle (req, res, next) {
     const data = req.body
 

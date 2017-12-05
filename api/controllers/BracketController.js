@@ -68,19 +68,19 @@ const BracketController = {
 
       nextStage = BracketService.getNextStageUpdated(bracket, round, user)
 
-      RoundController.saveOrUpdateRound(nextStage.round)
-    }).then( _ => {
-      bracket[nextStage.name] = nextStage.rounds
-      // Controller.update(Bracket, res, bracket._id, bracket)
-      Bracket.findOneAndUpdate({_id : bracket._id}, bracket, function(err, doc){
-        if(err) throw err
+      RoundController.saveOrUpdateRound(nextStage.round).then( _ => {
+        bracket[nextStage.name] = nextStage.rounds
+        // Controller.update(Bracket, res, bracket._id, bracket)
+        Bracket.findOneAndUpdate({_id : bracket._id}, bracket, function(err, doc){
+          if(err) throw err
 
-        Bracket.findOne({_id: bracket._id}).then(doc => {
-          Controller.returnResponseSuccess(res, doc, 'Round winner updated successfully');
-        }).catch( err => {
-          Controller.returnResponseError(res, err)
+          Bracket.findOne({_id: bracket._id}).then(doc => {
+            Controller.returnResponseSuccess(res, doc, 'Round winner updated successfully');
+          }).catch( err => {
+            Controller.returnResponseError(res, err)
+          })
         })
-      })
+    })
 
 
     }).catch( err => {
