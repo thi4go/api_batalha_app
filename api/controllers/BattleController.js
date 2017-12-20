@@ -36,15 +36,7 @@ const BattleController = {
   delete (req, res, next) {
     const id = req.params.id
 
-    Battle.findOne({_id: id}).then( (err, doc) => {
-      res.send(doc)
-    })
-
-    // Battle.remove({_id: id}, (err) => {
-    //
-    // })
-    //
-    // Controller.delete(Battle, res, id)
+    Controller.delete(Battle, res, id)
   },
 
   createBattle (req, res, next) {
