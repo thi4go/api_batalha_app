@@ -26,6 +26,9 @@ const RoundService = {
         while(bn != 0) {
             r   = randomize(0, fighters.length-1)
             mod = n%numrounds
+            while (rounds[mod].first.gender == 'mina' && fighters[r].gender == 'mina') {
+                r = randomize(0, fighters.length-1)
+            }
             RoundService.roundInsert(mod, fighters[r], rounds, MapRound.STAGEKEY.FIRST_STAGE)
             fighters.splice(r, 1)
             bn--
