@@ -1,11 +1,35 @@
 'use strict';
 
-const _             = require('lodash'),
-    controller      = require('./Controller'),
+const Controller      = require('./Controller'),
     mongoose        = require('mongoose'),
     Image           = mongoose.model('Image')
 
 const ImageController = {
+
+  // ------- RESTful ROUTES -------
+
+  getAll (req, res, next) {
+    Controller.getAll(Image, res)
+  },
+
+  getById (req, res, next) {
+    const id = req.params.id
+
+    Controller.getById(Image, res, id)
+  },
+
+  update (req, res, next) {
+    const id   = req.params.id
+    const data = req.body
+
+    Controller.update(Image, res, id, data)
+  },
+
+  delete (req, res, next) {
+    const id = req.params.id
+
+    Controller.delete(Image, res, id)
+  },
 
     createImage(req, res, next){
         let data = req.body;
@@ -21,35 +45,7 @@ const ImageController = {
             controller.returnResponseSuccess(res,doc,'Created with Success');
         });
 
-    },
-
-    deleteImage(req, res, next){
-        let id = req.params.image_id;
-        controller.deleteById(Image, id, req, res, next);
-    },
-
-    updateImage(req, res, next){
-        let data = req.body || {};
-        let id   = req.params.image_id;
-
-        controller.updateById(Image, id, data, req, res, next);
-    },
-
-    getImageById(req, res, next){
-        let id = req.params.image_id;
-        controller.getById(Image, id, req, res, next);
-    },
-
-    getAllImages(req, res, next){
-        Image.find({}).exec(function(err, images){
-            if(err) controller.returnResponseError(res,err);
-
-            if(!images) controller.returnResponseNotFound(res,next);
-
-            controller.returnResponseSuccess(res,images);
-        });
     }
-
 }
 
 module.exports = ImageController

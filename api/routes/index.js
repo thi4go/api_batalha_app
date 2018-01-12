@@ -81,24 +81,24 @@ server.post('/user',     userController.createUser)
 
 
 // GROUPS
-server.post('/group/create-group',                groupController.createGroup)
-server.get('/group/get-all-groups',               groupController.getAllGroups)
-server.get('/group/get-group-by-id/:group_id',    groupController.getGroupById)
-server.put('/group/update-group-by-id/:group_id', groupController.updateGroupById)
-server.del('/group/delete-group-by-id/:group_id', groupController.deleteGroupById)
+server.get('/groups',     groupController.getAll)
+server.get('/group/:id',  groupController.getById)
+server.put('/group/:id',  groupController.update)
+server.del('/group/:id',  groupController.delete)
+server.post('/group',     groupController.createGroup)
 
 
 // IMAGES
-server.post('/image/create-image',                imageController.createImage)
-server.get('/image/get-all-images',               imageController.getAllImages)
-server.get('/image/get-image-by-id/:image_id',    imageController.getImageById)
-server.put('/image/update-image/:image_id',       imageController.updateImage)
-server.del('/image/delete-image/:image_id',       imageController.deleteImage)
+server.get('/images',     imageController.getAll)
+server.get('/image/:id',  imageController.getById)
+server.put('/image/:id',  imageController.update)
+server.del('/image/:id',  imageController.delete)
+server.post('/image',     imageController.createImage)
 
 
 // VIDEOS
-server.post('/video/create-video',                videoController.createVideo)
-server.get('/video/get-all-videos',               videoController.getAllVideos)
-server.get('/video/get-video-by-id/:video_id',    videoController.getVideoById)
-server.put('/video/update-video/:video_id',       videoController.updateVideo)
-server.del('/video/delete-video/:video_id',       videoController.deleteVideo)
+server.get('/videos',     videoController.getAll)
+server.get('/video/:id',  videoController.getById)
+server.put('/video/:id',  videoController.update)
+server.del('/video/:id',  videoController.delete)
+server.post('/video',     videoController.createVideo)
