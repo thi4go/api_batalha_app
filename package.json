@@ -17,12 +17,9 @@
     "body-parser": "^1.17.2",
     "bunyan": "^1.8.12",
     "bunyan-winston-adapter": "^0.2.0",
-    "chai": "^3.5.0",
-    "chai-http": "^3.0.0",
     "cors": "^2.8.4",
     "lodash": "^4.17.4",
     "mime": "^2.0.3",
-    "mocha": "^3.4.2",
     "mongoose": "^4.12.3",
     "mongoose-api-query": "^0.1.1-pre",
     "mongoose-autopopulate": "^0.6.0",
@@ -32,5 +29,9 @@
     "restify-cors-middleware": "^1.0.1",
     "winston": "^2.4.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.5.3"
+  }
 }

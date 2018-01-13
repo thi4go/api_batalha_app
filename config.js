@@ -1,10 +1,13 @@
 
 'use strict'
 
-const devEnv = require('./config/dev.json')
+const devEnv  = require('./config/dev.json')
+const testEnv = require('./config/test.json')
 
-if(!process.env.NODE_ENV)
-    process.env.NODE_ENV = devEnv.NODE_ENV
+if(process.env.NODE_ENV == 'test')
+  process.env.NODE_ENV = testEnv.NODE_ENV
+else if(!process.env.NODE_ENV)
+  process.env.NODE_ENV = devEnv.NODE_ENV
 
 
 module.exports = {

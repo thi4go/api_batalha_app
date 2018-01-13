@@ -34,30 +34,27 @@ const UserController = {
 		Controller.delete(User, res, id)
 	},
 
-	createUser : function(req, res, next) {
+	createUser (req, res, next) {
 		let data = req.body || {}
 
 		let user = new User(data)
 
 		user.save(function(err, doc) {
 			if (err) Controller.returnResponseError(res,err)
-
-			Controller.returnResponseSuccess(res,doc,'Created with Success')
-
+			else Controller.returnResponseSuccess(res,doc,'Created with Success')
 		})
 	},
 
 
 	// ------- SERVICES -------
 
-	searchUserByName : function(req, res, next){
+	searchUserByName (req, res, next) {
 
 		const name = req.params.name
 
 		User.find({name : {$regex : name, $options: "i" } }).exec(function(err,users){
-			if(err)	Controller.returnResponseError(res,err)
-
-			Controller.returnResponseSuccess(res,users)
+			if (err)	Controller.returnResponseError(res,err)
+			else Controller.returnResponseSuccess(res,users)
 		})
 
 	},

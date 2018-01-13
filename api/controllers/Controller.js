@@ -7,16 +7,15 @@ const _ 	   = require('lodash'),
 
 const Controller = {
 
-	returnResponseSuccess(res,data,msg){
+	returnResponseSuccess (res, data){
 		return res.json(data)
-
 	},
 
-	returnResponseError(res,err){
+	returnResponseError (res, err){
 		return res.send(401, {error: err})
 	},
 
-	returnResponseNotFound(res,next){
+	returnResponseNotFound (res, next){
 		return res.json({
 			success : false,
 			msg     : new errors.ResourceNotFoundError('The resource you requested could not be found.')
@@ -28,7 +27,7 @@ const Controller = {
 	create (type, res) {
 		const scope = this
 
-		type.save(function(err,doc) {
+		type.save(function (err,doc) {
 			if (err) scope.returnResponseError(res, err)
   		else scope.returnResponseSuccess(res, doc, 'Created with Success')
 		})
@@ -38,8 +37,9 @@ const Controller = {
 		const scope = this
 
 		type.findOneAndUpdate({_id: id}, data).then( doc => {
-			type.findOne({_id: id}).then( (err, doc) => {
-				scope.returnResponseSuccess(res, doc, 'Updated with success')
+			type.findOne({ _id: id }, function(err, doc) {
+				if (err) 	scope.returnResponseError(res,err)
+				else 	scope.returnResponseSuccess(res,doc)
 			})
 		}).catch( err => {
 			scope.returnResponseError(res, err)
@@ -74,7 +74,7 @@ const Controller = {
 		})
 	},
 
-	updateById : function(type, id, data, req, res, next) {
+	updateById (type, id, data, req, res, next) {
 
 		const scope = this
 
@@ -90,7 +90,7 @@ const Controller = {
 
 	},
 
-	deleteById : function(type, id, req, res, next) {
+	deleteById (type, id, req, res, next) {
 
 		const scope = this
 		type.remove({ _id: id }, function(err) {

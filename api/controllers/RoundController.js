@@ -1,6 +1,6 @@
 'use strict';
 
-const controller   = require('./Controller'),
+const Controller   = require('./Controller'),
       mongoose     = require('mongoose'),
       Round 		   = mongoose.model('Round')
 
