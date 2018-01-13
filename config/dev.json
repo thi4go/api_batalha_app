@@ -1,6 +1,6 @@
 {
-  "DB_HOST"  : "mongodb://app_batalha:escada123@appbatalha-shard-00-00-vpocl.mongodb.net:27017,appbatalha-shard-00-01-vpocl.mongodb.net:27017,appbatalha-shard-00-02-vpocl.mongodb.net:27017/appBatalha?replicaSet=appBatalha-shard-0&ssl=true&authSource=admin",
+  "DB_HOST"  : "mongodb://app_batalha:escada123@appbatalha-shard-00-00-vpocl.mongodb.net:27017,appbatalha-shard-00-01-vpocl.mongodb.net:27017,appbatalha-shard-00-02-vpocl.mongodb.net:27017/appBatalhaTest?replicaSet=appBatalha-shard-0&ssl=true&authSource=admin",
   "NODE_ENV" : "dev",
-  "PORT"     : 80,
+  "PORT"     : 8000,
   "BASE_URL" : "https://batalha-da-escada.herokuapp.com"
 }
