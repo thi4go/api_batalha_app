@@ -36,7 +36,7 @@ const UserController = {
 
 	createUser (req, res, next) {
 		let data = req.body || {}
-
+		
 		let user = new User(data)
 
 		user.save(function(err, doc) {

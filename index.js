@@ -4,14 +4,14 @@
 /**
  * Module Dependencies
  */
-const config        = require('./config'),
-      restify       = require('restify'),
-      bunyan        = require('bunyan'),
-      winston       = require('winston'),
-      bunyanWinston = require('bunyan-winston-adapter'),
-      mongoose      = require('mongoose'),
-      corsMiddleware = require('restify-cors-middleware')
-
+const config         = require('./config'),
+      restify        = require('restify'),
+      bunyan         = require('bunyan'),
+      winston        = require('winston'),
+      bunyanWinston  = require('bunyan-winston-adapter'),
+      mongoose       = require('mongoose'),
+      corsMiddleware = require('restify-cors-middleware'),
+      jwt            = require('restify-jwt')
 /**
  * Logging
  */
@@ -55,12 +55,11 @@ server.use(restify.plugins.acceptParser(server.acceptable))
 server.use(restify.plugins.queryParser({ mapParams: true }))
 server.use(restify.plugins.fullResponse())
 
-// server.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE");
-//   next();
-// });
+// var jwtConfig = {
+//     secret: config.jwt_secret
+// }
+//
+// server.use(jwt(jwtConfig))
 
 /**
  * Error Handling

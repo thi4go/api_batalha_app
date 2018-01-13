@@ -13,7 +13,9 @@
   "author": "Victor",
   "license": "ISC",
   "dependencies": {
+    "assert-plus": "^1.0.0",
     "babel": "^6.23.0",
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.17.2",
     "bunyan": "^1.8.12",
     "bunyan-winston-adapter": "^0.2.0",
@@ -27,6 +29,8 @@
     "mongoose-type-url": "^1.0.2",
     "restify": "^6.3.2",
     "restify-cors-middleware": "^1.0.1",
+    "restify-errors": "^5.0.0",
+    "restify-jwt": "^0.4.0",
     "winston": "^2.4.0"
   },
   "devDependencies": {

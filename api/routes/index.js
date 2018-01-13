@@ -5,7 +5,8 @@
  * Module Dependencies
  */
 const _    = require('lodash'),
-  errors   = require('restify-errors')
+  jwt      = require('restify-jwt')
+
 
 /**
  * Model Schema
@@ -30,7 +31,8 @@ const userController    = require('../controllers/UserController'),
       battleController  = require('../controllers/BattleController'),
       imageController   = require('../controllers/ImageController'),
       videoController   = require('../controllers/VideoController'),
-      newsController    = require('../controllers/NewsController')
+      newsController    = require('../controllers/NewsController'),
+      authController    = require('../controllers/AuthController')
 
 
 
@@ -48,6 +50,12 @@ server.get('/get-active-battle',    battleController.getLastestBattle)
 server.post('/update-round-winner', battleController.updateRoundWinner)
 server.post('/search-user-by-name', userController.searchUserByName)
 
+
+/*
+* Authentication routes
+*/
+
+server.post('/login', authController.login)
 
 /*
 * RESTful routes for dabatase models

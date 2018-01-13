@@ -15,6 +15,7 @@ module.exports = {
     version: '0.0.1',
     env: process.env.NODE_ENV ,
     port: process.env.PORT || devEnv.PORT,
+    jwt_secret: 'battleofbattles',
     base_url: process.env.BASE_URL || devEnv.BASE_URL,
     db: {
         // uri: 'mongodb://127.0.0.1:27017/api_batalha_app',
