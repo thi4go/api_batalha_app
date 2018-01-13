@@ -2,14 +2,37 @@
 'use strict';
 
 
-const controller = require('./Controller'),
-	_ 	     = require('lodash'),
+const Controller = require('./Controller'),
 	mongoose   = require('mongoose'),
-	Group 	 = mongoose.model('Group'),
-	User 	 	 = mongoose.model('User')
+	Group 	 = mongoose.model('Group')
 
 
 const GroupController = {
+
+  // ------- RESTful ROUTES -------
+
+  getAll (req, res, next) {
+    Controller.getAll(Group, res)
+  },
+
+  getById (req, res, next) {
+    const id = req.params.id
+
+    Controller.getById(Group, res, id)
+  },
+
+  update (req, res, next) {
+    const id   = req.params.id
+    const data = req.body
+
+    Controller.update(Group, res, id, data)
+  },
+
+  delete (req, res, next) {
+    const id = req.params.id
+
+    Controller.delete(Group, res, id)
+  },
 
 	createGroup : function(req, res, next) {
 		let data = req.body || {}
@@ -35,43 +58,8 @@ const GroupController = {
 
 		controller.returnResponseSuccess(res,group)
 
-	},
+	}
 
-	getAllGroups : function(req, res, next) {
-		Group.find({}).populate('_members').exec(function(err,groups){
-
-		  if(err)
-			  controller.returnResponseError(res,err)
-
-		  let groupMap = {}
-
-			groups.forEach(function(group){
-				groupMap[group._id] = group
-			})
-
-      controller.returnResponseSuccess(res,groupMap)
-		})
-	},
-	getGroupById : function(req, res, next) {
-
-		const id = req.params.group_id
-		controller.getById(Group, id, req, res, next)
-
-	},
-	updateGroupById : function(req, res, next) {
-
-		let data = req.body || {}
-		let id   = req.params.group_id
-
-		controller.updateById(Group, id, data, req, res, next)
-
-	},
-	deleteGroupById : function(req, res, next) {
-
-		let id = req.params.group_id
-		controller.deleteById(Group, id, req, res, next)
-
-	},
 }
 
 module.exports = GroupController

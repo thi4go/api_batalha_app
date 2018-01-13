@@ -1,12 +1,35 @@
 'use strict';
 
-const _             = require('lodash'),
-    controller      = require('./Controller'),
+const Controller      = require('./Controller'),
     mongoose        = require('mongoose'),
     Video           = mongoose.model('Video')
 
 const VideoController = {
 
+  // ------- RESTful ROUTES -------
+
+  getAll (req, res, next) {
+    Controller.getAll(Group, res)
+  },
+
+  getById (req, res, next) {
+    const id = req.params.id
+
+    Controller.getById(Group, res, id)
+  },
+
+  update (req, res, next) {
+    const id   = req.params.id
+    const data = req.body
+
+    Controller.update(Group, res, id, data)
+  },
+
+  delete (req, res, next) {
+    const id = req.params.id
+
+    Controller.delete(Group, res, id)
+  },
     createVideo(req, res, next){
         let data = req.body;
         let video = new Video({
@@ -21,35 +44,7 @@ const VideoController = {
             controller.returnResponseSuccess(res,doc,'Created with Success');
         });
 
-    },
-
-    deleteVideo(req, res, next){
-        let id = req.params.video_id;
-        controller.deleteById(Video, id, req, res, next);
-    },
-
-    updateVideo(req, res, next){
-        let data = req.body || {};
-        let id   = req.params.video_id;
-
-        controller.updateById(Video, id, data, req, res, next);
-    },
-
-    getVideoById(req, res, next){
-        let id = req.params.video_id;
-        controller.getById(Video, id, req, res, next);
-    },
-
-    getAllVideos(req, res, next){
-        Video.find({}).exec(function(err, videos){
-            if(err) controller.returnResponseError(res,err);
-
-            if(!videos) controller.returnResponseNotFound(res,next);
-
-            controller.returnResponseSuccess(res,videos);
-        });
     }
-
 }
 
 module.exports = VideoController

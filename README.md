@@ -8,7 +8,7 @@ API serving app da batalha in NodeJs
 
 ```bash
 # Clone github repo
-  $ git clone https://github.com/vctt94/api_batalha_app.git
+  $ git clone https://github.com/thi4go/api_batalha_app.git
 
 # Enter folder
   $ cd api_batalha_app 
