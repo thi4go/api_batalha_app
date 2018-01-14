@@ -4,8 +4,7 @@
 /**
  * Module Dependencies
  */
-const _    = require('lodash'),
-  jwt      = require('restify-jwt')
+const jwt = require('jsonwebtoken')
 
 
 /**
@@ -43,6 +42,19 @@ const userController    = require('../controllers/UserController'),
 
 
 /*
+* Middleware
+*/
+
+const auth = (req, res, next) => {
+  let token = req.header('User-Token')
+
+  jwt.verify(token, 'battleofbattles', (err, data) => {
+    if (err) res.send(401, {error: 'invalid authentication token'})
+    else next()
+  })
+}
+
+/*
 * Microservices routes
 */
 
@@ -56,6 +68,7 @@ server.post('/search-user-by-name', userController.searchUserByName)
 */
 
 server.post('/login', authController.login)
+server.post('/verify', authController.verify)
 
 /*
 * RESTful routes for dabatase models
@@ -81,7 +94,7 @@ server.del('/bracket/:id',  bracketController.delete)
 
 
 // USER
-server.get('/users',      userController.getAll)
+server.get('/users',     userController.getAll)
 server.get('/user/:id',  userController.getById)
 server.put('/user/:id',  userController.update)
 server.del('/user/:id',  userController.delete)
