@@ -8,10 +8,4 @@ const chai = require('chai'),
 
 describe('Battle', () => {
 
-  after( done => {
-    Battle.remove({}, (err) => {
-       done()
-    })
-  })
-
 })
