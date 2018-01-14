@@ -10,8 +10,8 @@ const config         = require('./config'),
       winston        = require('winston'),
       bunyanWinston  = require('bunyan-winston-adapter'),
       mongoose       = require('mongoose'),
-      corsMiddleware = require('restify-cors-middleware'),
-      jwt            = require('restify-jwt')
+      corsMiddleware = require('restify-cors-middleware')
+
 /**
  * Logging
  */
@@ -55,11 +55,8 @@ server.use(restify.plugins.acceptParser(server.acceptable))
 server.use(restify.plugins.queryParser({ mapParams: true }))
 server.use(restify.plugins.fullResponse())
 
-// var jwtConfig = {
-//     secret: config.jwt_secret
-// }
-//
-// server.use(jwt(jwtConfig))
+
+
 
 /**
  * Error Handling

@@ -14,12 +14,6 @@ describe('Users', () => {
   const user = new User({"name":"teste","email":"teste@teste.com","gender":"mano","user_level":1})
   const buser = new User({"name": "tt"})
 
-  after( done => {
-    User.remove({}, (err) => {
-       done()
-    })
-  })
-
   describe('/POST user', () => {
 
     it('it should create a user', (done) => {
