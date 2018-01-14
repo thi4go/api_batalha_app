@@ -20,7 +20,7 @@ describe('Users', () => {
     })
   })
 
-  it('it should NOT have any users', (done) => {
+  it('it should NOT have any user', (done) => {
     chai.request(server)
       .get('/users')
       .end((err, res) => {
@@ -151,7 +151,7 @@ describe('Users', () => {
   describe('/GET users', () => {
 
     it('it should GET all the users', (done) => {
-      wait.msleep(10)
+      wait.msleep(50)
       chai.request(server)
         .get('/users')
         .end((err, res) => {

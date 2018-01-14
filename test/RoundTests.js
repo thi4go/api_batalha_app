@@ -2,6 +2,7 @@ process.env.NODE_ENV = 'test';
 
 //Require the dev-dependencies
 const chai = require('chai'),
+  wait     = require('sleep'),
   server   = require('../index'),
   mongoose = require('mongoose'),
   User     = mongoose.model('User'),
@@ -14,5 +15,20 @@ describe('Rounds', () => {
     //const round3 = new Round({"first": user1, "second": user2, "stage": 1})
     //const round4 = new Round({"first": user3, "second": user4, "stage": 2})
 
+  before(done => {
+    Round.remove({}, (err) => {
+      done()
+    })
+  })
+
+  it('it should NOT have any rounds', (done) => {
+    chai.request(server)
+      .get('/rounds')
+      .end((err, res) => {
+        res.should.have.status(200)
+        res.body.should.have.length(0)
+        done()
+      })
+  })
 
 })

@@ -53,7 +53,7 @@ const UserController = {
 		const name = req.params.name
 
 		User.find({name : {$regex : name, $options: "i" } }).exec(function(err,users){
-			if (err)	Controller.returnResponseError(res,err)
+			if (err) Controller.returnResponseError(res,err)
 			else Controller.returnResponseSuccess(res,users)
 		})
 
