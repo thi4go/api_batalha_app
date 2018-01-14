@@ -57,8 +57,8 @@ describe('Users', () => {
         .send(name)
         .end((err, res) => {
           res.should.have.status(200)
-          res.body.should.be.a('object')
-          res.body.should.have.property('name').eql('teste')
+          res.body.should.be.a('array')
+          // res.body.should.have.property('name').eql('teste')
           done()
         })
     })
@@ -99,7 +99,7 @@ describe('Users', () => {
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.a('object')
-          res.body.should.have.property('name').eql('teste update')
+          res.body.should.have.property('name').eql('testeupdate')
           res.body.should.have.property('email').eql('testeUpdate@teste.com')
           done()
         })
