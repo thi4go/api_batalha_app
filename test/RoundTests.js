@@ -2,14 +2,10 @@ process.env.NODE_ENV = 'test';
 
 //Require the dev-dependencies
 const chai = require('chai'),
-  chaiHttp = require('chai-http'),
   server   = require('../index'),
   mongoose = require('mongoose'),
-  Round    = mongoose.model('Round'),
-  User     = mongoose.model('User')
-
-
-chai.use(chaiHttp);
+  User     = mongoose.model('User'),
+  Round    = mongoose.model('Round')
 
 describe('Users', () => {
 
