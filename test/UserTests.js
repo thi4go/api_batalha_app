@@ -2,17 +2,15 @@ process.env.NODE_ENV = 'test';
 
 //Require the dev-dependencies
 const chai = require('chai'),
-  chaiHttp = require('chai-http'),
   server   = require('../index'),
   mongoose = require('mongoose'),
   User 	   = mongoose.model('User')
 
-chai.use(chaiHttp);
-
 describe('Users', () => {
 
   const user = new User({"name":"teste","email":"teste@teste.com","gender":"mano","user_level":1})
-  const buser = new User({"name": "tt"})
+  const nuser = new User({"gender": "tt"})
+  const guser = new User({"name": "tt"})
 
   describe('/POST user', () => {
 
@@ -23,15 +21,28 @@ describe('Users', () => {
         .end((err, res) => {
           res.should.have.status(200)
           res.body.should.be.a('object')
-          // res.body.should.have.property('success').eql(true);
           done();
         });
+    })
+
+    it('it should NOT create a user without name field', (done) => {
+      chai.request(server)
+        .post('/user/')
+        .send(nuser)
+        .end((err, res) => {
+          res.should.have.status(401)
+          res.body.should.be.a('object')
+          res.body.should.have.property('error')
+          res.body.error.errors.should.have.property('name')
+          res.body.error.errors.name.should.have.property('kind').eql('required')
+          done();
+        })
     })
 
     it('it should NOT create a user without gender field', (done) => {
       chai.request(server)
         .post('/user/')
-        .send(buser)
+        .send(guser)
         .end((err, res) => {
           res.should.have.status(401)
           res.body.should.be.a('object')
