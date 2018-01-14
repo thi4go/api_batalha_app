@@ -11,15 +11,8 @@ const Controller = {
 		return res.json(data)
 	},
 
-	returnResponseError (res, err){
-		return res.send(401, {error: err})
-	},
-
-	returnResponseNotFound (res, next){
-		return res.json({
-			success : false,
-			msg     : new errors.ResourceNotFoundError('The resource you requested could not be found.')
-		})
+	returnResponseError (res, err, msg = ''){
+		return res.send(401, {error: err, msg: msg})
 	},
 
 	//----------------------------------------------------------------------------
