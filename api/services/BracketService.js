@@ -47,17 +47,41 @@ const timeToShine = function(users) {
 	return luckies
 }
 
+const newBracket = function(name, stage){
+  var brackets
+  switch (name) {
+    case 'first_stage':
+      brackets = new Bracket({'first_stage': stage})
+      break;
+    case 'quarter_final':
+      brackets = new Bracket({'quarter_final': stage})
+      break;
+    case 'semi_final':
+      brackets = new Bracket({'semi_final': stage})
+      break;
+    default:
+      brackets = new Bracket({'finale': stage})
+      break;
+  }
+  
+  return brackets
+}
+
 const BracketService = {
 
 	// ** Main function to select MC's at first stage
 	firstStage(users) {
 		let n = users.length
+    let nameStage = 'first_stage'
 		var firstStage
 
 		if(n <= 16) {
 			// ** Organize the few fighters the best we can:
-			let numrounds = RoundService.defineLowRounds(n)
+			let phase = RoundService.defineLowRounds(n)
+      let numrounds = phase.rounds
+      nameStage = phase.name
 			firstStage = RoundService.rounds(users, numrounds)
+      console.log(nameStage)
 		}
 		else {
 			if(n < 25) count = 16

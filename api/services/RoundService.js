@@ -36,34 +36,43 @@ const RoundService = {
   },
 
   defineLowRounds (n) {
+    let phase = {'rounds': null, 'name': null}
     switch (n) {
       case 4:
       case 5:
-        return 2
+        phase.rounds = 2
+        phase.name = 'semi_final'
         break;
       case 6:
       case 7:
-        return 3
+        phase.rounds = 3
+        phase.name = 'semi_final'
         break;
       case 8:
       case 9:
-        return 4
+        phase.rounds = 4
+        phase.name = 'quarter_final'
         break;
       case 10:
       case 11:
-        return 5
+        phase.rounds = 5
+        phase.name = 'quarter_final'
         break;
       case 12:
       case 13:
-        return 6
+        phase.rounds = 6
+        phase.name = 'quarter_final'
         break;
       case 14:
       case 15:
-        return 7
+        phase.rounds = 7
+        phase.name = 'quarter_final'
         break;
-      default: //n<=4
-        return 1
+      default: // n < 4
+        phase.rounds = 1
+        phase.name = 'finale'
     }
+    return phase
   }
 }
 
