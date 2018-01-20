@@ -80,14 +80,18 @@ const BracketService = {
 	*/
 	getNextStageUpdated(bracket, round, user){
 		const stageKey = round.stage + 1
-		const stageStr = MapRound.STAGESTR[stageKey]
-		const rounds    = bracket[stageStr]
+    const crrStg   = MapRound.STAGESTR[round.stage] // current stage e.g: semi_final
+    const numcurr  = bracket[crrStg].length         // number of rounds in current stage
+		const stageStr = MapRound.STAGESTR[stageKey]    // next stage e.g: finale
+		const rounds   = bracket[stageStr]
 
 		var i = 0
+
 		while(rounds[i] != null && rounds[i].second != null){
 			i++
 		}
 
+    if(numcurr%2 != 0 && i > numcurr/2) i--
 		RoundService.roundInsert(i, user, rounds, stageKey)
 
 		const nextStage = {rounds : rounds, round : rounds[i], name : stageStr}

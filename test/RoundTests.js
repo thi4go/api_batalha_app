@@ -13,7 +13,7 @@ describe('Rounds', () => {
     //const round2 = new Round({"first": user2, "second": user4, "third": user5, "stage": 0})
     //const round3 = new Round({"first": user1, "second": user2, "stage": 1})
     //const round4 = new Round({"first": user3, "second": user4, "stage": 2})
-
+  
   before(done => {
     Round.remove({}, (err) => {
       done()
