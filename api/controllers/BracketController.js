@@ -70,7 +70,6 @@ const BracketController = {
 
       RoundController.saveOrUpdateRound(nextStage.round).then( _ => {
         bracket[nextStage.name] = nextStage.rounds
-        // Controller.update(Bracket, res, bracket._id, bracket)
         Bracket.findOneAndUpdate({_id : bracket._id}, bracket, function(err, doc){
           if(err) throw err
 

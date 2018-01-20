@@ -59,6 +59,7 @@ const RoundController = {
         else{
           //update
           doc.second = round.second
+          doc.third  = round.third
           Round.findOneAndUpdate({_id : doc._id}, doc, function(err, doc){
             if(err) throw err
           })

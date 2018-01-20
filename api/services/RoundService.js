@@ -9,13 +9,10 @@ const RoundService = {
 
   // ** Insert user at round i ** //
   roundInsert (i, user, rounds, stage) {
-    console.log("Oi")
     if(rounds[i] == null)
       rounds[i] = new Round({'first': user, 'second': null, 'stage' : stage})
-    else if(rounds[i].second == null)
-      rounds[i].second = user
-    else
-      rounds[i].third  = user
+    else if(rounds[i].second == null) rounds[i].second = user
+    else rounds[i].third  = user
   },
 
   // ** Organize the selected users in the initial bracket
@@ -24,14 +21,15 @@ const RoundService = {
     let r      = 0
     let mod    = 0
     let rounds = []
+    let bn     = fighters.length
 
-    while(fighters.length > 0) {
+    while(bn > 0) {
       r   = randomize(0, fighters.length-1)
       mod = n%numrounds
-      console.log(mod)
       RoundService.roundInsert(mod, fighters[r], rounds, MapRound.STAGEKEY.FIRST_STAGE)
       fighters.splice(r, 1)
       n++
+      bn--
     }
 
     return rounds

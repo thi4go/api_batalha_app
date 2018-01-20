@@ -36,3 +36,5 @@ BattleSchema.plugin(createdModified, { index: true })
 
 const Battle = mongoose.model('Battle', BattleSchema)
 module.exports = Battle
+
+//{"name": "dfadf", "users": ["5a629096ea22581503d556d6", "5a629084ea22581503d556d5", "5a629096ea22581503d556d6", "5a629084ea22581503d556d5", "5a629096ea22581503d556d6", "5a629084ea22581503d556d5"]}

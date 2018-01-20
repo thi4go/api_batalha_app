@@ -86,12 +86,10 @@ const BracketService = {
 		const rounds   = bracket[stageStr]
 
 		var i = 0
+    var bound = Math.floor(numcurr/2) - 1
 
-		while(rounds[i] != null && rounds[i].second != null){
-			i++
-		}
+		while(rounds[i] != null && rounds[i].second != null && i < bound) i++ 
 
-    if(numcurr%2 != 0 && i > numcurr/2) i--
 		RoundService.roundInsert(i, user, rounds, stageKey)
 
 		const nextStage = {rounds : rounds, round : rounds[i], name : stageStr}
