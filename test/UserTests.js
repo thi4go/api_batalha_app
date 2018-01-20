@@ -2,7 +2,6 @@ process.env.NODE_ENV = 'test';
 
 //Require the dev-dependencies
 const chai = require('chai'),
-  wait     = require('sleep'),
   server   = require('../index'),
   mongoose = require('mongoose'),
   User 	   = mongoose.model('User')
@@ -125,38 +124,16 @@ describe('Users', () => {
           done()
         })
     })
-
-    const users = [new User({"name":"teste1","email":"teste1@teste.com","gender":"mano","user_level":1}),
-      new User({"name":"teste2","email":"teste2@teste.com","gender":"mano","user_level":1}), 
-      new User({"name":"teste3","email":"teste3@teste.com","gender":"mina","user_level":1}),
-      new User({"name":"teste4","email":"teste4@teste.com","gender":"mina","user_level":1}),
-      new User({"name":"teste5","email":"teste5@teste.com","gender":"mina","user_level":1}),
-      new User({"name":"teste6","email":"teste6@teste.com","gender":"mano","user_level":1})]
-
-    it('it should create 6 users', (done) => {
-      users.forEach(u => {
-        chai.request(server)
-          .post('/user/')
-          .send(u)
-          .end((err, res) => {
-            res.should.have.status(200)
-            res.body.should.be.a('object')
-          });
-      })
-        done();
-    })
-
   })
 
   describe('/GET users', () => {
 
     it('it should GET all the users', (done) => {
-      wait.msleep(50)
       chai.request(server)
         .get('/users')
         .end((err, res) => {
           res.should.have.status(200)
-          res.body.should.have.length(7)
+          res.body.should.have.length(1)
           done()
         })
     })

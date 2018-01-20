@@ -4,8 +4,8 @@ var chai = require('chai'),
 chai.should();
 chai.use(chaiHttp);
 
-require('./RoundTests.js')
-require('./UserTests.js')
+//require('./RoundTests.js')
+//require('./UserTests.js')
 require('./BattleTests.js')
 
 

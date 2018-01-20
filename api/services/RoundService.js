@@ -1,49 +1,72 @@
 const mongoose  = require('mongoose'),
-	  User 	    = mongoose.model('User'),
-	  Round     = mongoose.model('Round'),
-      randomize = require ('../utils/Random'),
-      MapRound  = require('../utils/MapRound')
+  User 	    = mongoose.model('User'),
+  Round     = mongoose.model('Round'),
+  randomize = require ('../utils/Random'),
+  MapRound  = require('../utils/MapRound')
 
 
 const RoundService = {
-    roundInsert (i, user, rounds, stage) {
-        if(rounds[i] == null)
-            rounds[i] = new Round({'first': user, 'second': null, 'stage' : stage})
-        else if(rounds[i].second == null)
-            rounds[i].second = user
-        else
-            rounds[i].third  = user
-    },
 
-    // ** Organize the selected users in the initial bracket
-    rounds (fighters, numrounds = 8) {
-        let n 	   = 0
-        let r      = 0
-        let mod    = 0
-        let rounds = []
-        let bn  = fighters.length
+  // ** Insert user at round i ** //
+  roundInsert (i, user, rounds, stage) {
+    console.log("Oi")
+    if(rounds[i] == null)
+      rounds[i] = new Round({'first': user, 'second': null, 'stage' : stage})
+    else if(rounds[i].second == null)
+      rounds[i].second = user
+    else
+      rounds[i].third  = user
+  },
 
-        while(bn != 0) {
-            r   = randomize(0, fighters.length-1)
-            mod = n%numrounds
-            // while (rounds[mod].first.gender == 'mina' && fighters[r].gender == 'mina') {
-            //     r = randomize(0, fighters.length-1)
-            // }
-            RoundService.roundInsert(mod, fighters[r], rounds, MapRound.STAGEKEY.FIRST_STAGE)
-            fighters.splice(r, 1)
-            bn--
-            n++
-        }
+  // ** Organize the selected users in the initial bracket
+  rounds (fighters, numrounds = 8) {
+    let n 	   = 0
+    let r      = 0
+    let mod    = 0
+    let rounds = []
 
-        return rounds
-    },
-
-    defineLowRounds (n) {
-        if ( n < 4 ) return 1
-        if ( n >= 4  && n < 7   ) return 2
-        if ( n >= 7  && n < 13  ) return 4
-        if ( n >= 13 && n <= 16 ) return 8
+    while(fighters.length > 0) {
+      r   = randomize(0, fighters.length-1)
+      mod = n%numrounds
+      console.log(mod)
+      RoundService.roundInsert(mod, fighters[r], rounds, MapRound.STAGEKEY.FIRST_STAGE)
+      fighters.splice(r, 1)
+      n++
     }
+
+    return rounds
+  },
+
+  defineLowRounds (n) {
+    switch (n) {
+      case 4:
+      case 5:
+        return 2
+        break;
+      case 6:
+      case 7:
+        return 3
+        break;
+      case 8:
+      case 9:
+        return 4
+        break;
+      case 10:
+      case 11:
+        return 5
+        break;
+      case 12:
+      case 13:
+        return 6
+        break;
+      case 14:
+      case 15:
+        return 7
+        break;
+      default: //n<=4
+        return 1
+    }
+  }
 }
 
 module.exports = RoundService

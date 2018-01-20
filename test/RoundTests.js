@@ -2,7 +2,6 @@ process.env.NODE_ENV = 'test';
 
 //Require the dev-dependencies
 const chai = require('chai'),
-  wait     = require('sleep'),
   server   = require('../index'),
   mongoose = require('mongoose'),
   User     = mongoose.model('User'),
