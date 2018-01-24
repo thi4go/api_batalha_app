@@ -1,10 +1,10 @@
 const mongoose = require('mongoose'),
-User 	   = mongoose.model('User'),
-Bracket  = mongoose.model('Bracket'),
-Round    = mongoose.model('Round'),
-RoundService = require('./RoundService'),
-randomize = require('../utils/Random'),
-MapRound = require('../utils/MapRound')
+User 	         = mongoose.model('User'),
+Stage          = mongoose.model('Stage'),
+Round          = mongoose.model('Round'),
+RoundService   = require('./RoundService'),
+randomize      = require('../utils/Random'),
+MapRound       = require('../utils/MapRound')
 
 var count = 0
 
@@ -47,27 +47,7 @@ const timeToShine = function(users) {
 	return luckies
 }
 
-const newBracket = function(name, stage){
-  var brackets
-  switch (name) {
-    case 'first_stage':
-      brackets = new Bracket({'first_stage': stage})
-      break;
-    case 'quarter_final':
-      brackets = new Bracket({'quarter_final': stage})
-      break;
-    case 'semi_final':
-      brackets = new Bracket({'semi_final': stage})
-      break;
-    default:
-      brackets = new Bracket({'finale': stage})
-      break;
-  }
-  
-  return brackets
-}
-
-const BracketService = {
+const StageService = {
 
 	// ** Main function to select MC's at first stage
 	firstStage(users) {
@@ -91,12 +71,9 @@ const BracketService = {
 			firstStage = RoundService.rounds(theChosenOnes)
 		}
 
-		let brackets = new Bracket({'length': numStages, 'stages': firstStage});
-    //console.log(stages[0])
-    console.log(brackets['stages'])
-    console.log("you know im such a fool for you")
+		let stages = new Stage({'length': numStages, 'rounds': firstStage});
 
-		return brackets
+		return stages
 	},
 
 	/* Find the current stage
@@ -125,4 +102,5 @@ const BracketService = {
 }
 
 
-module.exports = BracketService
+module.exports = StageService
+

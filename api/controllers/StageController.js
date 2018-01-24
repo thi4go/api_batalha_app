@@ -4,76 +4,76 @@
 const Controller  = require('./Controller'),
   mongoose        = require('mongoose'),
   RoundController = require('./RoundController'),
-  BracketService  = require('../services/BracketService'),
+  StageService  = require('../services/StageService'),
   Service         = require('../services/Service'),
-  Bracket 		    = mongoose.model('Bracket'),
+  Stage 		    = mongoose.model('Stage'),
   Round           = mongoose.model('Round')
 
-const BracketController = {
+const StageController = {
 
   // ------- RESTful ROUTES -------
 
   getAll (req, res, next) {
-    Controller.getAll(Bracket, res)
+    Controller.getAll(Stage, res)
   },
 
   getById (req, res, next) {
     const id = req.params.id
 
-    Controller.getById(Bracket, res, id)
+    Controller.getById(Stage, res, id)
   },
 
   update (req, res, next) {
     const id   = req.params.id
     const data = req.body
 
-    Controller.update(Bracket, res, id, data)
+    Controller.update(Stage, res, id, data)
   },
 
   delete (req, res, next) {
     const id = req.params.id
 
-    Controller.delete(Bracket, res, id)
+    Controller.delete(Stage, res, id)
   },
 
 
   // ------- SERVICES -------
 
-  saveBracket (res, bracket, stage){
-    //let rounds = bracket['stages'][0]
-    //console.log(rounds)
+  saveStage (res, stage, label){
+    let rounds = stage['rounds']
+    console.log(rounds)
 
-    //for (var i = 0, len = rounds.length; i < len; i++) {
-      //RoundController.saveRound(rounds[i])
-    //}
-    bracket.save(function(err){
+    for (var i = 0, len = rounds.length; i < len; i++) {
+      RoundController.saveRound(rounds[i])
+    }
+    stage.save(function(err){
       if(err) throw err
     })
   },
 
-  updateBracket (res, bracket_id, round_id, user){
+  updateStage (res, stage_id, round_id, user){
 
-    var bracket = null
+    var stage = null
     var round   = null
     var nextStage
 
     RoundController.setRoundWinner(round_id, user)
 
     Promise.all([
-      Service.getById(Bracket, bracket_id),
+      Service.getById(Stage, stage_id),
       Service.getById(Round, round_id)
     ]).then( result => {
-      bracket = result[0]
+      stage = result[0]
       round   = result[1]
 
-      nextStage = BracketService.getNextStageUpdated(bracket, round, user)
+      nextStage = StageService.getNextStageUpdated(stage, round, user)
 
       RoundController.saveOrUpdateRound(nextStage.round).then( _ => {
-        bracket[nextStage.name] = nextStage.rounds
-        Bracket.findOneAndUpdate({_id : bracket._id}, bracket, function(err, doc){
+        stage[nextStage.name] = nextStage.rounds
+        Stage.findOneAndUpdate({_id : stage._id}, stage, function(err, doc){
           if(err) throw err
 
-          Bracket.findOne({_id: bracket._id}).then(doc => {
+          Stage.findOne({_id: stage._id}).then(doc => {
             Controller.returnResponseSuccess(res, doc, 'Round winner updated successfully');
           }).catch( err => {
             Controller.returnResponseError(res, err)
@@ -90,4 +90,5 @@ const BracketController = {
 }
 
 
-module.exports = BracketController
+module.exports = StageController
+

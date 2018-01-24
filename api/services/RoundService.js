@@ -26,7 +26,7 @@ const RoundService = {
     while(bn > 0) {
       r   = randomize(0, fighters.length-1)
       mod = n%numrounds
-      RoundService.roundInsert(mod, fighters[r], rounds, MapRound.STAGEKEY.FIRST_STAGE)
+      RoundService.roundInsert(mod, fighters[r], rounds, 0)
       fighters.splice(r, 1)
       n++
       bn--
@@ -36,43 +36,43 @@ const RoundService = {
   },
 
   defineLowRounds (n) {
-    let phase = {'rounds': null, 'name': null}
+    let battle = {'rounds': null, 'stages': null}
     switch (n) {
       case 4:
       case 5:
-        phase.rounds = 2
-        phase.name = 'semi_final'
+        battle.rounds = 2
+        battle.stages = 2
         break;
       case 6:
       case 7:
-        phase.rounds = 3
-        phase.name = 'semi_final'
+        battle.rounds = 3
+        battle.stages = 2
         break;
       case 8:
       case 9:
-        phase.rounds = 4
-        phase.name = 'quarter_final'
+        battle.rounds = 4
+        battle.stages = 3
         break;
       case 10:
       case 11:
-        phase.rounds = 5
-        phase.name = 'quarter_final'
+        battle.rounds = 5
+        battle.stages = 3
         break;
       case 12:
       case 13:
-        phase.rounds = 6
-        phase.name = 'quarter_final'
+        battle.rounds = 6
+        battle.stages = 3
         break;
       case 14:
       case 15:
-        phase.rounds = 7
-        phase.name = 'quarter_final'
+        battle.rounds = 7
+        battle.stages = 3
         break;
       default: // n < 4
-        phase.rounds = 1
-        phase.name = 'finale'
+        battle.rounds = 1
+        battle.stages = 1
     }
-    return phase
+    return battle
   }
 }
 

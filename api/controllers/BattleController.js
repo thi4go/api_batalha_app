@@ -6,7 +6,9 @@ const _             = require('lodash'),
   Controller        = require('./Controller'),
   Service           = require('../services/Service'),
   BracketController = require('./BracketController'),
+  StageController = require('./StageController'),
   BracketService    = require('../services/BracketService'),
+  StageService    = require('../services/StageService'),
   MapRound          = require('../utils/MapRound'),
   Battle            = mongoose.model('Battle'),
   User              = mongoose.model('User')
@@ -43,15 +45,17 @@ const BattleController = {
     const data = req.body
 
     try {
-      const bracket = BracketService.firstStage(data.users)
+      const firststage = StageService.firstStage(data.users)
+      let stages = []
+      stages[0] = firststage
 
       let battle  = new Battle({
         'name': data.name,
         'description': data.description,
-        'brackets': bracket
+        'stages': stages
       })
 
-      BracketController.saveBracket(res, battle.brackets, MapRound.STAGESTR[0])
+      StageController.saveStage(res, battle.stages[0], 0)
 
       battle.save(function(err){
         if(err) Controller.returnResponseError(res,err)
@@ -65,6 +69,7 @@ const BattleController = {
 
     } catch(err) {
       // res.send(err)
+      console.log(err)
       Controller.returnResponseError(res,err)
     }
   },

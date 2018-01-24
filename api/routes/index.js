@@ -17,7 +17,8 @@ const User    = require('../models/User'),
       Battle  = require('../models/Battle'),
       Image   = require('../models/Image'),
       Video   = require('../models/Video'),
-      News    = require('../models/News')
+      News    = require('../models/News'),
+      Stage   = require('../models/Stage')
 
 /**
  * Controllers
@@ -31,7 +32,8 @@ const userController    = require('../controllers/UserController'),
       imageController   = require('../controllers/ImageController'),
       videoController   = require('../controllers/VideoController'),
       newsController    = require('../controllers/NewsController'),
-      authController    = require('../controllers/AuthController')
+      authController    = require('../controllers/AuthController'),
+      stageController   = require('../controllers/StageController')
 
 
 
