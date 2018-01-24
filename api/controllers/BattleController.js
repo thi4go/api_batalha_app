@@ -5,10 +5,11 @@ const _             = require('lodash'),
   mongoose          = require('mongoose'),
   Controller        = require('./Controller'),
   Service           = require('../services/Service'),
-  BracketController = require('./BracketController'),
-  BracketService    = require('../services/BracketService'),
-  MapRound          = require('../utils/MapRound'),
+  StageController   = require('./StageController'),
+  RoundController   = require('./RoundController'),
+  StageService      = require('../services/StageService'),
   Battle            = mongoose.model('Battle'),
+  Round             = mongoose.model('Round'),
   User              = mongoose.model('User')
 
 
@@ -43,15 +44,20 @@ const BattleController = {
     const data = req.body
 
     try {
-      const bracket = BracketService.firstStage(data.users)
+      const generated = StageService.firstStage(data.users)
+      let stages = generated.stages
+      let phases = generated.phases
 
       let battle  = new Battle({
         'name': data.name,
         'description': data.description,
-        'brackets': bracket
+        'stages': stages,
+        'phases': phases
       })
 
-      BracketController.saveBracket(res, battle.brackets, MapRound.STAGESTR[0])
+      for (var i = 0, len = stages.length; i < len; i++) {
+        StageController.saveStage(res, battle.stages[i])
+      }
 
       battle.save(function(err){
         if(err) Controller.returnResponseError(res,err)
@@ -64,7 +70,7 @@ const BattleController = {
       })
 
     } catch(err) {
-      // res.send(err)
+      console.log(err)
       Controller.returnResponseError(res,err)
     }
   },
@@ -77,21 +83,37 @@ const BattleController = {
     const round_id   = req.body.round_id
     const user_id    = req.body.user_id
 
-    var new_stage
-
     try {
       Promise.all([
         Service.getById(User, user_id),
-        Service.getById(Battle, battle_id)
+        Service.getById(Battle, battle_id),
+        Service.getById(Round, round_id)
       ]).then( result => {
-        let user       = result[0]
-        let bracket_id = result[1].brackets
-
-        BracketController.updateBracket(res, bracket_id, round_id, user)
-      })
+        let user   = result[0]
+        let battle = result[1]
+        let round  = result[2]
+        const stages = battle.stages
+        const curr = round.stage
+        RoundController.setRoundWinner(round_id, user)
+        if (curr + 1 == battle.phases){
+          BattleController.setBattleWinner(res, battle, user)
+        }
+        else{
+          StageController.updateStage(res, stages, curr + 1, user)
+        }
+    })
     } catch(err) {
+      console.log(err)
       return Controller.returnResponseError(res, err)
     }
+  },
+
+  setBattleWinner(res, battle, user){
+    Battle.findOneAndUpdate({ _id: battle._id }, {'winner': user}, function(err, doc) {
+      if (err) throw err
+      else if (!doc) throw new Error('Battle not found')
+      Controller.returnResponseSuccess(res, battle, 'Battle winner updated successfully');
+    })
   },
 
   getLastBattle (req, res, next) {

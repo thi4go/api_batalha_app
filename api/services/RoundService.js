@@ -1,8 +1,7 @@
 const mongoose  = require('mongoose'),
   User 	    = mongoose.model('User'),
   Round     = mongoose.model('Round'),
-  randomize = require ('../utils/Random'),
-  MapRound  = require('../utils/MapRound')
+  randomize = require ('../utils/Random')
 
 
 const RoundService = {
@@ -26,7 +25,7 @@ const RoundService = {
     while(bn > 0) {
       r   = randomize(0, fighters.length-1)
       mod = n%numrounds
-      RoundService.roundInsert(mod, fighters[r], rounds, MapRound.STAGEKEY.FIRST_STAGE)
+      RoundService.roundInsert(mod, fighters[r], rounds, 0)
       fighters.splice(r, 1)
       n++
       bn--
@@ -36,34 +35,43 @@ const RoundService = {
   },
 
   defineLowRounds (n) {
+    let battle = {'rounds': null, 'stages': null}
     switch (n) {
       case 4:
       case 5:
-        return 2
+        battle.rounds = 2
+        battle.stages = 2
         break;
       case 6:
       case 7:
-        return 3
+        battle.rounds = 3
+        battle.stages = 2
         break;
       case 8:
       case 9:
-        return 4
+        battle.rounds = 4
+        battle.stages = 3
         break;
       case 10:
       case 11:
-        return 5
+        battle.rounds = 5
+        battle.stages = 3
         break;
       case 12:
       case 13:
-        return 6
+        battle.rounds = 6
+        battle.stages = 3
         break;
       case 14:
       case 15:
-        return 7
+        battle.rounds = 7
+        battle.stages = 3
         break;
-      default: //n<=4
-        return 1
+      default: // n < 4
+        battle.rounds = 1
+        battle.stages = 1
     }
+    return battle
   }
 }
 
