@@ -1,8 +1,7 @@
 const mongoose  = require('mongoose'),
   User 	    = mongoose.model('User'),
   Round     = mongoose.model('Round'),
-  randomize = require ('../utils/Random'),
-  MapRound  = require('../utils/MapRound')
+  randomize = require ('../utils/Random')
 
 
 const RoundService = {

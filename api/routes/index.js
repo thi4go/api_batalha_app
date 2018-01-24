@@ -12,7 +12,6 @@ const jwt = require('jsonwebtoken')
  */
 const User    = require('../models/User'),
       Group   = require('../models/Group'),
-      Bracket = require('../models/Bracket'),
       Round   = require('../models/Round'),
       Battle  = require('../models/Battle'),
       Image   = require('../models/Image'),
@@ -26,7 +25,6 @@ const User    = require('../models/User'),
 
 const userController    = require('../controllers/UserController'),
       groupController   = require('../controllers/GroupController'),
-      bracketController = require('../controllers/BracketController'),
       roundController   = require('../controllers/RoundController'),
       battleController  = require('../controllers/BattleController'),
       imageController   = require('../controllers/ImageController'),
@@ -86,13 +84,6 @@ server.get('/battle/:id',  battleController.getById)
 server.put('/battle/:id',  battleController.update)
 server.del('/battle/:id',  battleController.delete)
 server.post('/battle',     battleController.createBattle)
-
-
-// BRACKETS
-server.get('/brackets',     bracketController.getAll)
-server.get('/bracket/:id',  bracketController.getById)
-server.put('/bracket/:id',  bracketController.update)
-server.del('/bracket/:id',  bracketController.delete)
 
 
 // USER

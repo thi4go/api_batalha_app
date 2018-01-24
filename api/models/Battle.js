@@ -13,17 +13,16 @@ const BattleSchema = new mongoose.Schema({
   description: {
     type: String
   },
-  brackets: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Bracket',
-    autopopulate: true
-  },
   stages: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Stage',
     required: true,
     autopopulate: true
   }],
+  phases: {
+    type: Number,
+    required: true
+  },
   winner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

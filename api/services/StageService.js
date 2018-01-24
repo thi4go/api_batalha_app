@@ -3,8 +3,7 @@ User 	         = mongoose.model('User'),
 Stage          = mongoose.model('Stage'),
 Round          = mongoose.model('Round'),
 RoundService   = require('./RoundService'),
-randomize      = require('../utils/Random'),
-MapRound       = require('../utils/MapRound')
+randomize      = require('../utils/Random')
 
 var count = 0
 
@@ -52,7 +51,7 @@ const StageService = {
 	// ** Main function to select MC's at first stage
 	firstStage(users) {
 		let n         = users.length
-    let numStages = 4
+    var numStages = 4
 		var firstStage
 
 		if(n <= 16) {
@@ -71,9 +70,13 @@ const StageService = {
 			firstStage = RoundService.rounds(theChosenOnes)
 		}
 
-		let stages = new Stage({'length': numStages, 'rounds': firstStage});
+		var stages = []
+    stages[0] = new Stage({'label': 0, 'rounds': firstStage});
+    for (var i = 1, len = numStages; i < len; i++) {
+      stages[i] = new Stage({'label': 1, 'rounds': []})
+    }
 
-		return stages
+		return {stages: stages, phases: numStages}
 	},
 
 	/* Find the current stage
@@ -81,23 +84,22 @@ const StageService = {
 	* If not, create a new round
 	* return the new stage updated
 	*/
-	getNextStageUpdated(bracket, round, user){
-		const stageKey = round.stage + 1
-    const crrStg   = MapRound.STAGESTR[round.stage] // current stage e.g: semi_final
-    const numcurr  = bracket[crrStg].length         // number of rounds in current stage
-		const stageStr = MapRound.STAGESTR[stageKey]    // next stage e.g: finale
-		const rounds   = bracket[stageStr]
+	getNextStageUpdated(stages, phase, user){
+    var rounds
+    const numcurr = stages[phase-1].rounds.length // number of rounds in previos phase
+    rounds = stages[phase].rounds
 
-		var i = 0
+    var i = 0
     var bound = Math.floor(numcurr/2) - 1
 
-		while(rounds[i] != null && rounds[i].second != null && i < bound) i++ 
+    while(rounds[i] != null && rounds[i].second != null && i < bound){ 
+      i++ 
+    }
 
-		RoundService.roundInsert(i, user, rounds, stageKey)
+    RoundService.roundInsert(i, user, rounds, phase)
 
-		const nextStage = {rounds : rounds, round : rounds[i], name : stageStr}
-
-		return nextStage
+    const nextStage = {rounds : rounds, round : rounds[i]}
+    return nextStage
 	}
 }
 

@@ -39,9 +39,8 @@ const StageController = {
 
   // ------- SERVICES -------
 
-  saveStage (res, stage, label){
+  saveStage (res, stage){
     let rounds = stage['rounds']
-    console.log(rounds)
 
     for (var i = 0, len = rounds.length; i < len; i++) {
       RoundController.saveRound(rounds[i])
@@ -51,40 +50,22 @@ const StageController = {
     })
   },
 
-  updateStage (res, stage_id, round_id, user){
+  updateStage (res, stages, phase, user){
 
-    var stage = null
-    var round   = null
-    var nextStage
-
-    RoundController.setRoundWinner(round_id, user)
-
-    Promise.all([
-      Service.getById(Stage, stage_id),
-      Service.getById(Round, round_id)
-    ]).then( result => {
-      stage = result[0]
-      round   = result[1]
-
-      nextStage = StageService.getNextStageUpdated(stage, round, user)
+    Service.getById(Stage, stages[phase]).then(result => {
+      let stage = result
+      const nextStage = StageService.getNextStageUpdated(stages, phase, user) 
 
       RoundController.saveOrUpdateRound(nextStage.round).then( _ => {
-        stage[nextStage.name] = nextStage.rounds
+        stage.rounds = nextStage.rounds
         Stage.findOneAndUpdate({_id : stage._id}, stage, function(err, doc){
           if(err) throw err
 
-          Stage.findOne({_id: stage._id}).then(doc => {
-            Controller.returnResponseSuccess(res, doc, 'Round winner updated successfully');
-          }).catch( err => {
-            Controller.returnResponseError(res, err)
-          })
+          Controller.returnResponseSuccess(res, stages, 'Round winner updated successfully');
         })
+      })
     })
 
-
-    }).catch( err => {
-      throw err
-    })
 
   }
 }
