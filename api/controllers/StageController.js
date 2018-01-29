@@ -4,10 +4,11 @@
 const Controller  = require('./Controller'),
   mongoose        = require('mongoose'),
   RoundController = require('./RoundController'),
-  StageService  = require('../services/StageService'),
+  StageService    = require('../services/StageService'),
   Service         = require('../services/Service'),
-  Stage 		    = mongoose.model('Stage'),
-  Round           = mongoose.model('Round')
+  Stage 		      = mongoose.model('Stage'),
+  Round           = mongoose.model('Round'),
+  Battle          = mongoose.model('Battle')
 
 const StageController = {
 
@@ -50,18 +51,19 @@ const StageController = {
     })
   },
 
-  updateStage (res, stages, phase, user){
+  updateStage (res, stages, battle_id, phase, user){
 
     Service.getById(Stage, stages[phase]).then(result => {
       let stage = result
-      const nextStage = StageService.getNextStageUpdated(stages, phase, user) 
+      const nextStage = StageService.getNextStageUpdated(stages, phase, user)
 
       RoundController.saveOrUpdateRound(nextStage.round).then( _ => {
         stage.rounds = nextStage.rounds
         Stage.findOneAndUpdate({_id : stage._id}, stage, function(err, doc){
           if(err) throw err
-
-          Controller.returnResponseSuccess(res, stages, 'Round winner updated successfully');
+          Battle.findOne({_id: battle_id}, function(err, doc) {
+            Controller.returnResponseSuccess(res, doc, 'Round winner updated successfully');
+          })
         })
       })
     })
@@ -72,4 +74,3 @@ const StageController = {
 
 
 module.exports = StageController
-
