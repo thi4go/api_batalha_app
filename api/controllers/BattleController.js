@@ -99,7 +99,7 @@ const BattleController = {
           BattleController.setBattleWinner(res, battle, user)
         }
         else{
-          StageController.updateStage(res, stages, curr + 1, user)
+          StageController.updateStage(res, stages, battle_id, curr + 1, user)
         }
     })
     } catch(err) {

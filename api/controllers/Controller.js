@@ -48,7 +48,7 @@ const Controller = {
 		})
 	},
 
-	getAll (type, res, populate, childrens) {
+	getAll (type, res) {
 		const scope = this
 
 		type.find({}).then( docs => {
