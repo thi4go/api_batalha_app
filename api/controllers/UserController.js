@@ -4,7 +4,8 @@
 
 const Controller = require('./Controller'),
 		  mongoose   = require('mongoose'),
-			User 	     = mongoose.model('User')
+			User 	     = mongoose.model('User'),
+			Battle     = mongoose.model('Battle')
 
 
 const UserController = {
@@ -58,6 +59,16 @@ const UserController = {
 		})
 
 	},
+
+	async statistics (req, res, next) {
+		
+		const id = req.params.id
+
+		const user = await User.find({_id: id})
+
+		res.json(user)
+
+	}
 
 
 
