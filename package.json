@@ -7,6 +7,10 @@
     "start": "node index.js",
     "test": "mocha --timeout 10000 ./test/test.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thi4go/api_batalha_app.git"
+  },
   "keywords": [
     "RESTful"
   ],
