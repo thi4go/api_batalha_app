@@ -86,6 +86,11 @@ server.del('/battle/:id',  battleController.delete)
 server.post('/battle',     battleController.createBattle)
 
 
+// STAGES
+server.get('/stages',     stageController.getAll)
+server.get('/stages/:id', stageController.getById)
+
+
 // USER
 server.get('/users',     userController.getAll)
 server.get('/user/:id',  userController.getById)
