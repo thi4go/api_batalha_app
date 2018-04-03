@@ -59,6 +59,7 @@ const auth = (req, res, next) => {
 */
 
 server.get('/get-active-battle',    battleController.getLastestBattle)
+server.post('/set-inactive-battle', battleController.setInactiveBattle)
 server.post('/update-round-winner', battleController.updateRoundWinner)
 
 server.get('/user-statistics/:id',  userController.statistics)
@@ -79,6 +80,8 @@ server.post('/verify', authController.verify)
 // ROUNDS
 server.get('/rounds',    roundController.getAll)
 server.get('/round/:id', roundController.getById)
+server.put('/round/:id', roundController.update)
+server.del('/round/:id', roundController.delete)
 
 // BATTLES
 server.get('/battles',     battleController.getAll)
@@ -86,6 +89,12 @@ server.get('/battle/:id',  battleController.getById)
 server.put('/battle/:id',  battleController.update)
 server.del('/battle/:id',  battleController.delete)
 server.post('/battle',     battleController.createBattle)
+
+// STAGES
+server.get('/stages',     stageController.getAll)
+server.get('/stage/:id',  stageController.getById)
+server.put('/stage/:id',  stageController.update)
+server.del('/stage/:id',  stageController.delete)
 
 
 // USER

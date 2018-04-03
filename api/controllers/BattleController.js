@@ -9,6 +9,7 @@ const _             = require('lodash'),
   RoundController   = require('./RoundController'),
   StageService      = require('../services/StageService'),
   Battle            = mongoose.model('Battle'),
+  Stage             = mongoose.model('Stage'),
   Round             = mongoose.model('Round'),
   User              = mongoose.model('User')
 
@@ -34,13 +35,22 @@ const BattleController = {
     Controller.update(Battle, res, id, data)
   },
 
-  delete (req, res, next) {
+  async delete (req, res, next) {
     const id = req.params.id
+
+    let resp = await Battle.findOne({_id: id})
+
+    for (let stage of resp.stages) {
+      for (let round of stage.rounds) {
+        await Round.remove({_id: round._id})
+      }
+      await Stage.remove({_id: stage._id})
+    }
 
     Controller.delete(Battle, res, id)
   },
 
-  createBattle (req, res, next) {
+  async createBattle (req, res, next) {
     const data = req.body
 
     try {
@@ -69,7 +79,7 @@ const BattleController = {
           })
       })
 
-    } catch(err) {
+    } catch (err) {
       console.log(err)
       Controller.returnResponseError(res,err)
     }
@@ -77,6 +87,12 @@ const BattleController = {
 
 
   // ------- SERVICES -------
+
+  async setInactiveBattle (req, res, next) {
+    const battle = Battle.find({_id: req.body.battle_id})
+
+    
+  },
 
   updateRoundWinner (req, res, next){
     const battle_id  = req.body.battle_id
@@ -108,7 +124,7 @@ const BattleController = {
     }
   },
 
-  setBattleWinner(res, battle, user){
+  setBattleWinner (res, battle, user){
     Battle.findOneAndUpdate({ _id: battle._id }, {'winner': user}, function(err, doc) {
       if (err) throw err
       else if (!doc) throw new Error('Battle not found')
