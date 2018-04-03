@@ -97,6 +97,11 @@ server.put('/stage/:id',  stageController.update)
 server.del('/stage/:id',  stageController.delete)
 
 
+// STAGES
+server.get('/stages',     stageController.getAll)
+server.get('/stages/:id', stageController.getById)
+
+
 // USER
 server.get('/users',     userController.getAll)
 server.get('/user/:id',  userController.getById)

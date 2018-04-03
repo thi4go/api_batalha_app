@@ -55,10 +55,13 @@ const BattleController = {
 
     try {
       const generated = StageService.firstStage(data.users)
+      console.log(data)
+      asyncUpdate(data.users)
+
       let stages = generated.stages
       let phases = generated.phases
 
-      let battle  = new Battle({
+      let battle = new Battle({
         'name': data.name,
         'description': data.description,
         'stages': stages,
@@ -128,7 +131,7 @@ const BattleController = {
     Battle.findOneAndUpdate({ _id: battle._id }, {'winner': user}, function(err, doc) {
       if (err) throw err
       else if (!doc) throw new Error('Battle not found')
-      Controller.returnResponseSuccess(res, battle, 'Battle winner updated successfully');
+      Controller.returnResponseSuccess(res, doc);
     })
   },
 
@@ -139,12 +142,25 @@ const BattleController = {
   getLastestBattle (req, res, next) {
     Battle.find({active: true}).sort({created: -1}).limit(1).exec( (err, doc) => {
       if(err) Controller.returnResponseError(res, err)
-      Controller.returnResponseSuccess(res, doc, 'Latest Battle returned')
+
+      if(doc.length == 0)
+        Controller.returnResponseSuccess(res, null)
+      else
+        Controller.returnResponseSuccess(res, doc)
     })
     // Controller.getAll(Battle, res)
   },
 
 }
 
+
+const asyncUpdate = (users) => {
+  console.log(users)
+
+  for (var i = 0, len = users.length; i < len; i++) {
+    console.log(users[i])
+    // Battle.findOneAndUpdate({_id: u._id}, { "virgin" : false })
+  }
+}
 
 module.exports = BattleController

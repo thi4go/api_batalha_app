@@ -26,6 +26,7 @@ const BattleSchema = new mongoose.Schema({
   winner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    default: null,
     autopopulate: true
   },
   active: {
@@ -40,4 +41,3 @@ BattleSchema.plugin(createdModified, { index: true })
 
 const Battle = mongoose.model('Battle', BattleSchema)
 module.exports = Battle
-
