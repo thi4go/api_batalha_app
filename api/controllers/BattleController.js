@@ -8,6 +8,7 @@ const _             = require('lodash'),
   StageController   = require('./StageController'),
   RoundController   = require('./RoundController'),
   StageService      = require('../services/StageService'),
+  UserService       = require('../services/UserService'),
   Battle            = mongoose.model('Battle'),
   Stage             = mongoose.model('Stage'),
   Round             = mongoose.model('Round'),
@@ -52,11 +53,11 @@ const BattleController = {
 
   async createBattle (req, res, next) {
     const data = req.body
+    let users  = data.users
+    await UserService.setUsersVirgin(users)
 
     try {
       const generated = StageService.firstStage(data.users)
-      console.log(data)
-      asyncUpdate(data.users)
 
       let stages = generated.stages
       let phases = generated.phases
@@ -94,7 +95,7 @@ const BattleController = {
   async setInactiveBattle (req, res, next) {
     const battle = Battle.find({_id: req.body.battle_id})
 
-    
+
   },
 
   updateRoundWinner (req, res, next){
@@ -153,14 +154,5 @@ const BattleController = {
 
 }
 
-
-const asyncUpdate = (users) => {
-  console.log(users)
-
-  for (var i = 0, len = users.length; i < len; i++) {
-    console.log(users[i])
-    // Battle.findOneAndUpdate({_id: u._id}, { "virgin" : false })
-  }
-}
 
 module.exports = BattleController
