@@ -128,6 +128,48 @@ const BattleController = {
     }
   },
 
+
+
+  async generateRanking (req, res, next) {
+
+    var users   = await User.find({})
+    var battles = await Battle.find({})
+
+    var users_local = []
+
+    for (var battle of battles) {
+
+      for (var round of battle.stages[0].rounds) {
+
+
+          for (var user of users) {
+
+            if (user._id.equals(round.first._id) || user._id.equals(round.second._id )) {
+              user.points = user.points + 1
+              users_local.push(user)
+
+              await User.findAndUpdate({ _id: user._id }, { points: user.points })
+            }
+            else if (round.third != null) {
+
+              if(user._id.equals(round.third._id)) {
+                user.points = user.points + 1
+                users_local.push(user)
+              }
+
+              await User.findAndUpdate({ _id: user._id }, { points: user.points })
+            }
+          }
+
+      }
+    }
+    // res.send('lol')
+    res.send(users_local)
+
+  },
+
+
+
   setBattleWinner (res, battle, user){
     Battle.findOneAndUpdate({ _id: battle._id }, {'winner': user}, function(err, doc) {
       if (err) throw err

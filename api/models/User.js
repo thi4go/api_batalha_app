@@ -30,6 +30,10 @@ const UserSchema = new mongoose.Schema({
         required : true,
         default: 1
     },
+    points: {
+        type: Number,
+        default: 0
+    },
     virgin: {
         type: Boolean,
         default: true

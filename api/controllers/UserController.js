@@ -4,6 +4,7 @@
 
 const Controller = require('./Controller'),
 		  mongoose   = require('mongoose'),
+			bcrypt     = require('bcrypt'),
 			User 	     = mongoose.model('User'),
 			Battle     = mongoose.model('Battle')
 
@@ -22,11 +23,25 @@ const UserController = {
 		Controller.getById(User, res, id)
 	},
 
-	update (req, res, next) {
+	async update (req, res, next) {
 		const id   = req.params.id
-		const data = req.body
+		let data   = req.body
 
-		Controller.update(User, res, id, data)
+		try {
+			if (data.password) {
+				let salt = await bcrypt.genSalt(10)
+				let hash = await bcrypt.hash(data.password, salt)
+				data.password = hash
+			}
+
+			await User.findOneAndUpdate({_id: id}, data)
+
+			let user = await User.findOne({ _id: id })
+
+			Controller.returnResponseSuccess(res, user)
+		} catch (err) {
+			Controller.returnResponseError(res, err)
+		}
 	},
 
 	delete (req, res, next) {
@@ -37,7 +52,7 @@ const UserController = {
 
 	createUser (req, res, next) {
 		let data = req.body || {}
-		
+
 		let user = new User(data)
 
 		user.save(function(err, doc) {
@@ -61,7 +76,7 @@ const UserController = {
 	},
 
 	async statistics (req, res, next) {
-		
+
 		const id = req.params.id
 
 		const user = await User.find({_id: id})

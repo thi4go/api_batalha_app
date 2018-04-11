@@ -58,6 +58,8 @@ const auth = (req, res, next) => {
 * Microservices routes
 */
 
+server.get('/generate-ranking',    battleController.generateRanking)
+
 server.get('/get-active-battle',    battleController.getLastestBattle)
 server.post('/set-inactive-battle', battleController.setInactiveBattle)
 server.post('/update-round-winner', battleController.updateRoundWinner)
