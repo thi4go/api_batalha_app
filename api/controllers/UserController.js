@@ -44,6 +44,19 @@ const UserController = {
 		}
 	},
 
+	async isUnique (req, res, next) {
+		const name = req.params.name
+
+		let user = await User.find({name: name})
+
+		if (user.length == 0) {
+			res.send(200, 'true')
+			return
+		}
+		res.send(200, 'false')
+		return
+	},
+
 	delete (req, res, next) {
 		const id = req.params.id
 

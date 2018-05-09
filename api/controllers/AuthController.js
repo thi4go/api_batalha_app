@@ -18,12 +18,16 @@ const AuthController = {
             user: user,
             token: jwt.sign({ _id: user._id, email: user.email, user_level: user.user_level }, 'battleofbattles')
           })
+          return
         }
-        else res.send('ah')
       })
     }).catch( err => {
       Controller.returnResponseError(res, err, 'User does not exist')
     })
+  },
+
+  register (req, res, next) {
+    
   },
 
   verify (req, res, next) {

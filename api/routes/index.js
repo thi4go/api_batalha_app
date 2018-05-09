@@ -72,7 +72,8 @@ server.post('/search-user-by-name', userController.searchUserByName)
 * Authentication routes
 */
 
-server.post('/login', authController.login)
+server.post('/login',    authController.login)
+server.post('/register', authController.register)
 server.post('/verify', authController.verify)
 
 /*
@@ -107,6 +108,7 @@ server.get('/stages/:id', stageController.getById)
 // USER
 server.get('/users',     userController.getAll)
 server.get('/user/:id',  userController.getById)
+server.get('/user/unique/:name',  userController.isUnique)
 server.put('/user/:id',  userController.update)
 server.del('/user/:id',  userController.delete)
 server.post('/user',     userController.createUser)
