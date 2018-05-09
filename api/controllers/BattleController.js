@@ -128,6 +128,129 @@ const BattleController = {
     }
   },
 
+
+
+  async generateRanking (req, res, next) {
+
+    var users   = await User.find({})
+    var battles = await Battle.find({})
+
+    var users_local = []
+
+    for (var battle of battles) {
+
+      var stages = battle.stages.reverse()
+
+      var users_voted = []
+
+      for (var stage of stages) {
+
+        for (var round of stage.rounds) {
+          // FINAL
+          if (round.stage == 3) {
+
+            if (!BattleController.containsObj(round.first, users_voted)) {
+              let user = round.first
+              user.points += 3
+              users_voted.push(user)
+            }
+
+            if (!BattleController.containsObj(round.second, users_voted)) {
+              let user = round.second
+              user.points += 3
+              users_voted.push(user)
+            }
+          }
+          // SEMI-FINAL
+          if (round.stage == 2) {
+
+            if (!BattleController.containsObj(round.first, users_voted)) {
+              let user = round.first
+              user.points += 2
+              users_voted.push(user)
+            }
+
+            if (!BattleController.containsObj(round.second, users_voted)) {
+              let user = round.second
+              user.points += 2
+              users_voted.push(user)
+
+            }
+          }
+          // PRIMEIRA FASE
+          if (round.stage == 0) {
+
+            if (!BattleController.containsObj(round.first, users_voted)) {
+              let user = round.first
+              user.points += 1
+              users_voted.push(user)
+            }
+
+            if (!BattleController.containsObj(round.second, users_voted)) {
+              let user = round.second
+              user.points += 1
+              users_voted.push(user)
+            }
+
+            if (round.third) {
+
+              if (!BattleController.containsObj(round.third, users_voted)) {
+                let user = round.third
+                user.points += 1
+                users_voted.push(user)
+              }
+            }
+          }
+        }
+
+      }
+      BattleController.sumArray(users_voted, users_local)
+    }
+
+    users_local.sort( (a, b) => {
+      if (a.points > b.points)
+        return -1
+      if (a.points < b.points)
+        return 1
+      return 0
+    })
+
+    for (let user of users_local) {
+      console.log("MC " + user.name + ": " + user.points)
+    }
+
+    res.send(users_local)
+    return
+  },
+
+  sumArray (voted, local) {
+    if (local.length == 0) {
+      for (let user of voted) {
+        local.push(user)
+      }
+    } else {
+      for (let userv of voted) {
+        var unique = true
+        for (let userl of local) {
+          if (userv._id.equals(userl._id)) {
+            unique = false
+            userl.points = userv.points
+          }
+        }
+        if (unique) local.push(userv)
+      }
+
+    }
+  },
+
+  containsObj (obj, list) {
+
+    for (var i = 0; i < list.length; i++) {
+      if (list[i]._id.equals(obj._id)) return true
+    }
+    return false
+  },
+
   setBattleWinner (res, battle, user){
     Battle.findOneAndUpdate({ _id: battle._id }, {'winner': user}, function(err, doc) {
       if (err) throw err
