@@ -2,19 +2,21 @@
 'use strict'
 
 const mongoose         = require('mongoose'),
-      mongooseApiQuery = require('mongoose-api-query'),
       createdModified  = require('mongoose-createdmodified').createdModifiedPlugin,
-      bcrypt           = require('bcrypt')
+      bcrypt           = require('bcrypt'),
+      uniqueValidator  = require('mongoose-unique-validator')
 
 const UserSchema = new mongoose.Schema({
     name: {
         type 	 : String,
         required : true,
+        index: true,
         unique : true
     },
     email: {
         type 	 : String,
         required : false,
+        index: true,
         unique : true
     },
     gender: {
@@ -50,8 +52,8 @@ const UserSchema = new mongoose.Schema({
 
 });
 
-UserSchema.plugin(mongooseApiQuery)
 UserSchema.plugin(createdModified, { index: true })
+UserSchema.plugin(uniqueValidator)
 
 UserSchema.pre('save', function(next) {
   var user = this;
