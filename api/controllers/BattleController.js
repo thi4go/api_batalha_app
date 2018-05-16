@@ -144,20 +144,23 @@ const BattleController = {
       var users_voted = []
 
       for (var stage of stages) {
-
         for (var round of stage.rounds) {
           // FINAL
           if (round.stage == 3) {
 
             if (!BattleController.containsObj(round.first, users_voted)) {
-              let user = round.first
-              user.points += 3
+              let user = {}
+              user._id = round.first._id
+              user.name = round.first.name
+              user.points = 3
               users_voted.push(user)
             }
 
             if (!BattleController.containsObj(round.second, users_voted)) {
-              let user = round.second
-              user.points += 3
+              let user = {}
+              user._id = round.second._id
+              user.name = round.second.name
+              user.points = 3
               users_voted.push(user)
             }
           }
@@ -165,14 +168,18 @@ const BattleController = {
           if (round.stage == 2) {
 
             if (!BattleController.containsObj(round.first, users_voted)) {
-              let user = round.first
-              user.points += 2
+              let user = {}
+              user._id = round.first._id
+              user.name = round.first.name
+              user.points = 2
               users_voted.push(user)
             }
 
             if (!BattleController.containsObj(round.second, users_voted)) {
-              let user = round.second
-              user.points += 2
+              let user = {}
+              user._id = round.second._id
+              user.name = round.second.name
+              user.points = 2
               users_voted.push(user)
 
             }
@@ -181,22 +188,28 @@ const BattleController = {
           if (round.stage == 0) {
 
             if (!BattleController.containsObj(round.first, users_voted)) {
-              let user = round.first
-              user.points += 1
+              let user = {}
+              user._id = round.first._id
+              user.name = round.first.name
+              user.points = 1
               users_voted.push(user)
             }
 
             if (!BattleController.containsObj(round.second, users_voted)) {
-              let user = round.second
-              user.points += 1
+              let user = {}
+              user._id = round.second._id
+              user.name = round.second.name
+              user.points = 1
               users_voted.push(user)
             }
 
             if (round.third) {
 
               if (!BattleController.containsObj(round.third, users_voted)) {
-                let user = round.third
-                user.points += 1
+                let user = {}
+                user._id = round.third._id
+                user.name = round.third.name
+                user.points = 1
                 users_voted.push(user)
               }
             }
@@ -215,9 +228,6 @@ const BattleController = {
       return 0
     })
 
-    for (let user of users_local) {
-      console.log("MC " + user.name + ": " + user.points)
-    }
 
     res.send(users_local)
     return
@@ -234,7 +244,7 @@ const BattleController = {
         for (let userl of local) {
           if (userv._id.equals(userl._id)) {
             unique = false
-            userl.points = userv.points
+            userl.points += userv.points
           }
         }
         if (unique) local.push(userv)
