@@ -45,11 +45,22 @@ const UserSchema = new mongoose.Schema({
         ref 	 : 'Group',
         required : false
     }],
-    fb_url: {
+    biography: {
+      type: String,
+      required: false
+    },
+    facebook: {
         type 	 : String,
         required : false,
+    },
+    instagram: {
+        type: String,
+        required: false
+    },
+    youtube: {
+      type: String,
+      required: false
     }
-
 });
 
 UserSchema.plugin(createdModified, { index: true })

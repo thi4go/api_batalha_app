@@ -16,7 +16,7 @@ const AuthController = {
         if (result) {
           res.json({
             user: user,
-            token: jwt.sign({ _id: user._id, email: user.email, user_level: user.user_level }, 'battleofbattles')
+            token: jwt.sign({ _id: user._id, email: user.email }, 'battleofbattles')
           })
           return
         }
@@ -27,7 +27,7 @@ const AuthController = {
   },
 
   register (req, res, next) {
-    
+
   },
 
   verify (req, res, next) {
