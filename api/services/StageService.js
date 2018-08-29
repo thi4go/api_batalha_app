@@ -62,8 +62,7 @@ const StageService = {
 			firstStage    = RoundService.rounds(users, numRounds)
 		}
 		else {
-			if(n < 25) count = 16
-			else if(n >= 25) count = 20
+			count = 16
 
 			// ** Lottery:
 			let theChosenOnes = timeToShine(users)
