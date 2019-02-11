@@ -33,6 +33,11 @@ const RoundSchema = new mongoose.Schema({
     },
     stage: {
         type: Number
+    },
+    video: {
+        type: String,
+        default: null,
+        autopopulate: true
     }
 });
 

@@ -30,6 +30,7 @@
     "jsonwebtoken": "^8.1.0",
     "lodash": "^4.17.4",
     "mime": "^2.0.3",
+    "mongodb": "^3.1.0-beta4",
     "mongoose": "^4.13.12",
     "mongoose-api-query": "^0.1.1-pre",
     "mongoose-autopopulate": "^0.6.0",

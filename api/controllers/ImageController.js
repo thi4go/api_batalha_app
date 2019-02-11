@@ -31,22 +31,22 @@ const ImageController = {
     Controller.delete(Image, res, id)
   },
 
-    createImage(req, res, next){
-        let data = req.body;
-        let image = new Image({
-            'title'    : data.title,
-            'subtitle' : data.subtitle,
-            'url'      : data.url
-        });
+  createImage(req, res, next){
+      let data = req;
+      console.log(data.body)
+      let image = new Image({
+          'title'    : data.title,
+          'subtitle' : data.subtitle,
+          'url'      : data.url
+      });
+      //
+      // image.save(function(err, doc){
+      //     if(err) Controller.returnResponseError(res,err);
+      //
+      //     Controller.returnResponseSuccess(res,doc,'Created with Success');
+      // });
 
-        image.save(function(err, doc){
-            if(err) controller.returnResponseError(res,err);
-
-            controller.returnResponseSuccess(res,doc,'Created with Success');
-        });
-
-    }
+  }
 }
 
 module.exports = ImageController
-

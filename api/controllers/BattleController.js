@@ -132,7 +132,6 @@ const BattleController = {
 
   async generateRanking (req, res, next) {
 
-    var users   = await User.find({})
     var battles = await Battle.find({})
 
     var users_local = []
@@ -142,82 +141,87 @@ const BattleController = {
       var stages = battle.stages.reverse()
 
       var users_voted = []
-
-      for (var stage of stages) {
-        for (var round of stage.rounds) {
-          // FINAL
-          if (round.stage == 3) {
-
-            if (!BattleController.containsObj(round.first, users_voted)) {
-              let user = {}
-              user._id = round.first._id
-              user.name = round.first.name
-              user.points = 3
-              users_voted.push(user)
+      // if (battle.phases == 4) {
+        for (var stage of stages) {
+          for (var round of stage.rounds) {
+            if (round.first === null || round.second === null) {
+              res.send(battle);
+              return
             }
-
-            if (!BattleController.containsObj(round.second, users_voted)) {
-              let user = {}
-              user._id = round.second._id
-              user.name = round.second.name
-              user.points = 3
-              users_voted.push(user)
-            }
-          }
-          // SEMI-FINAL
-          if (round.stage == 2) {
-
-            if (!BattleController.containsObj(round.first, users_voted)) {
-              let user = {}
-              user._id = round.first._id
-              user.name = round.first.name
-              user.points = 2
-              users_voted.push(user)
-            }
-
-            if (!BattleController.containsObj(round.second, users_voted)) {
-              let user = {}
-              user._id = round.second._id
-              user.name = round.second.name
-              user.points = 2
-              users_voted.push(user)
-
-            }
-          }
-          // PRIMEIRA FASE
-          if (round.stage == 0) {
-
-            if (!BattleController.containsObj(round.first, users_voted)) {
-              let user = {}
-              user._id = round.first._id
-              user.name = round.first.name
-              user.points = 1
-              users_voted.push(user)
-            }
-
-            if (!BattleController.containsObj(round.second, users_voted)) {
-              let user = {}
-              user._id = round.second._id
-              user.name = round.second.name
-              user.points = 1
-              users_voted.push(user)
-            }
-
-            if (round.third) {
-
-              if (!BattleController.containsObj(round.third, users_voted)) {
+            // FINAL
+            if (round.stage == 3) {
+  
+              if (!BattleController.containsObj(round.first, users_voted)) {
                 let user = {}
-                user._id = round.third._id
-                user.name = round.third.name
-                user.points = 1
+                user._id = round.first._id
+                user.name = round.first.name
+                user.points = 3
+                users_voted.push(user)
+              }
+  
+              if (!BattleController.containsObj(round.second, users_voted)) {
+                let user = {}
+                user._id = round.second._id
+                user.name = round.second.name
+                user.points = 3
                 users_voted.push(user)
               }
             }
+            // SEMI-FINAL
+            if (round.stage == 2) {
+  
+              if (!BattleController.containsObj(round.first, users_voted)) {
+                let user = {}
+                user._id = round.first._id
+                user.name = round.first.name
+                user.points = 2
+                users_voted.push(user)
+              }
+  
+              if (!BattleController.containsObj(round.second, users_voted)) {
+                let user = {}
+                user._id = round.second._id
+                user.name = round.second.name
+                user.points = 2
+                users_voted.push(user)
+  
+              }
+            }
+            // PRIMEIRA FASE
+            if (round.stage == 0) {
+  
+              if (!BattleController.containsObj(round.first, users_voted)) {
+                let user = {}
+                user._id = round.first._id
+                user.name = round.first.name
+                user.points = 1
+                users_voted.push(user)
+              }
+  
+              if (!BattleController.containsObj(round.second, users_voted)) {
+                let user = {}
+                user._id = round.second._id
+                user.name = round.second.name
+                user.points = 1
+                users_voted.push(user)
+              }
+  
+              if (round.third) {
+  
+                if (!BattleController.containsObj(round.third, users_voted)) {
+                  let user = {}
+                  user._id = round.third._id
+                  user.name = round.third.name
+                  user.points = 1
+                  users_voted.push(user)
+                }
+              }
+            }
           }
-        }
-
+        // }
       }
       BattleController.sumArray(users_voted, users_local)
+
     }
 
     users_local.sort( (a, b) => {
@@ -227,7 +231,6 @@ const BattleController = {
         return 1
       return 0
     })
-
 
     res.send(users_local)
     return
@@ -254,7 +257,7 @@ const BattleController = {
   },
 
   containsObj (obj, list) {
-
+    if (obj == null) console.log(obj)
     for (var i = 0; i < list.length; i++) {
       if (list[i]._id.equals(obj._id)) return true
     }

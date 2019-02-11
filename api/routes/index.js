@@ -67,7 +67,7 @@ server.post('/update-round-winner', battleController.updateRoundWinner)
 server.get('/user-statistics/:id',  userController.statistics)
 server.post('/search-user-by-name', userController.searchUserByName)
 
-
+server.post('/upload-image', imageController.createImage)
 /*
 * Authentication routes
 */
